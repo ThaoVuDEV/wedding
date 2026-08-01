@@ -48,35 +48,35 @@ export const WeddingSchedule = ({ groomName, brideName }: WeddingScheduleProps) 
   }, []);
 
   return (
-    <section ref={rootRef} className="relative min-h-screen overflow-hidden bg-[#fbf7f1] px-6 py-20">
+    <section ref={rootRef} className="relative min-h-[100svh] overflow-hidden bg-[#fbf7f1] px-4 py-14 sm:px-6 sm:py-20">
       <div className="absolute inset-x-0 top-0 h-2 bg-gradient-to-r from-[#800020] via-[#d4af37] to-[#800020]" />
       <div className="mx-auto w-full max-w-6xl">
-        <div className={`mb-14 flex flex-col justify-between gap-6 transition-all duration-1000 md:flex-row md:items-end ${isVisible ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"}`}>
+        <div className={`mb-9 flex flex-col justify-between gap-4 transition-all duration-1000 sm:mb-14 sm:gap-6 md:flex-row md:items-end ${isVisible ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"}`}>
           <div>
             <p className="text-[10px] uppercase tracking-[0.5em] text-[#a8872b]">Mark your calendar</p>
-            <h2 className="mt-3 font-script text-6xl text-[#800020] md:text-8xl">Hẹn Một Ngày</h2>
+            <h2 className="mt-3 font-script text-5xl text-[#800020] sm:text-6xl md:text-8xl">Hẹn Một Ngày</h2>
           </div>
           <p className="max-w-sm text-sm font-light leading-7 text-gray-500">
             Ngày giờ và địa điểm chính thức sẽ được chúng mình cập nhật ngay khi hoàn tất. Bạn nhớ quay lại nhé.
           </p>
         </div>
 
-        <div className="grid overflow-hidden rounded-[2.5rem] border border-[#800020]/10 bg-white shadow-[0_30px_90px_rgba(92,35,45,0.1)] lg:grid-cols-[1fr_1.15fr]">
-          <div className="flex min-h-[420px] flex-col items-center justify-center bg-[#800020] p-10 text-center text-white">
+        <div className="grid overflow-hidden rounded-[2rem] border border-[#800020]/10 bg-white shadow-[0_30px_90px_rgba(92,35,45,0.1)] sm:rounded-[2.5rem] lg:grid-cols-[1fr_1.15fr]">
+          <div className="flex min-h-[340px] flex-col items-center justify-center bg-[#800020] p-6 text-center text-white sm:min-h-[420px] sm:p-10">
             <p className="text-[10px] uppercase tracking-[0.5em] text-[#d4af37]">November</p>
-            <p className="my-3 font-script text-[9rem] leading-none text-[#f7e5a8]">XX</p>
+            <p className="my-3 font-script text-[7rem] leading-none text-[#f7e5a8] sm:text-[9rem]">XX</p>
             <p className="text-2xl font-light tracking-[0.35em]">2026</p>
             <div className="my-8 h-px w-24 bg-[#d4af37]/50" />
             <p className="font-script text-2xl text-white/85">{groomName} & {brideName}</p>
           </div>
 
-          <div className="flex flex-col justify-center p-7 md:p-12">
+          <div className="flex flex-col justify-center p-5 sm:p-7 md:p-12">
             {pendingDetails.map((detail, index) => (
-              <div key={detail.label} className={`grid grid-cols-[3rem_1fr] gap-5 border-b border-[#800020]/10 py-7 transition-all duration-700 ${isVisible ? "translate-x-0 opacity-100" : "translate-x-8 opacity-0"}`} style={{ transitionDelay: `${250 + index * 160}ms` }}>
+              <div key={detail.label} className={`grid grid-cols-[2.25rem_1fr] gap-3 border-b border-[#800020]/10 py-5 transition-all duration-700 sm:grid-cols-[3rem_1fr] sm:gap-5 sm:py-7 ${isVisible ? "translate-x-0 opacity-100" : "translate-x-8 opacity-0"}`} style={{ transitionDelay: `${250 + index * 160}ms` }}>
                 <span className="text-xs text-[#d4af37]">{detail.icon}</span>
                 <div>
                   <p className="text-[10px] uppercase tracking-[0.3em] text-gray-400">{detail.label}</p>
-                  <p className="mt-2 font-script text-2xl text-[#800020]">{detail.value}</p>
+                  <p className="mt-2 font-script text-xl text-[#800020] sm:text-2xl">{detail.value}</p>
                 </div>
               </div>
             ))}
@@ -90,7 +90,7 @@ export const WeddingSchedule = ({ groomName, brideName }: WeddingScheduleProps) 
           {ceremonyEvents.map((event, index) => (
             <article
               key={event.title}
-              className={`relative overflow-hidden rounded-[2rem] border border-[#800020]/10 bg-white p-7 shadow-[0_18px_55px_rgba(92,35,45,0.08)] transition-all duration-1000 md:p-9 ${
+              className={`relative overflow-hidden rounded-[1.75rem] border border-[#800020]/10 bg-white p-5 shadow-[0_18px_55px_rgba(92,35,45,0.08)] transition-all duration-1000 sm:rounded-[2rem] sm:p-7 md:p-9 ${
                 isVisible
                   ? "translate-y-0 opacity-100"
                   : "translate-y-10 opacity-0"
@@ -106,12 +106,12 @@ export const WeddingSchedule = ({ groomName, brideName }: WeddingScheduleProps) 
                     <p className="text-[9px] uppercase tracking-[0.4em] text-[#a8872b]">
                       {event.side}
                     </p>
-                    <h3 className="mt-2 font-script text-4xl text-[#800020] md:text-5xl">
+                    <h3 className="mt-2 font-script text-3xl text-[#800020] sm:text-4xl md:text-5xl">
                       {event.title}
                     </h3>
                     <p className="mt-2 text-xs text-gray-400">{event.host}</p>
                   </div>
-                  <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-[#d4af37]/40 text-xl text-[#d4af37]">
+                  <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-[#d4af37]/40 text-lg text-[#d4af37] sm:h-12 sm:w-12 sm:text-xl">
                     ♡
                   </span>
                 </div>

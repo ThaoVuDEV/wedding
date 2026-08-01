@@ -9,6 +9,7 @@ import {
   serverTimestamp,
 } from "firebase/firestore";
 import { db } from "../lib/firebase";
+import { createPortal } from "react-dom";
 
 interface Wish {
   id: string;
@@ -116,22 +117,22 @@ export const WeddingWishes = () => {
   return (
     <section
       ref={rootRef}
-      className="relative min-h-screen w-full overflow-hidden bg-[#f6eee7] py-20"
+      className="relative min-h-[100svh] w-full overflow-hidden bg-[#f6eee7] py-14 sm:py-20"
     >
       <div className="absolute -top-24 -left-24 h-72 w-72 rounded-full bg-[#800020]/10 blur-3xl" />
       <div className="absolute -bottom-24 -right-24 h-80 w-80 rounded-full bg-[#d4af37]/15 blur-3xl" />
-      <div className="absolute inset-5 rounded-[2.5rem] border border-[#d4af37]/20 pointer-events-none" />
+      <div className="absolute inset-3 rounded-[2rem] border border-[#d4af37]/20 pointer-events-none sm:inset-5 sm:rounded-[2.5rem]" />
 
-      <div className="relative z-10 mx-auto w-full max-w-6xl px-6">
+      <div className="relative z-10 mx-auto w-full max-w-6xl px-4 sm:px-6">
         <header
-          className={`mb-12 text-center transition-all duration-1000 ${
+          className={`mb-8 text-center transition-all duration-1000 sm:mb-12 ${
             isVisible ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"
           }`}
         >
           <p className="mb-3 text-xs uppercase tracking-[0.45em] text-[#d4af37]">
             Send us some love
           </p>
-          <h2 className="font-script text-5xl text-[#800020] md:text-7xl">
+          <h2 className="font-script text-4xl text-[#800020] min-[380px]:text-5xl md:text-7xl">
             Sổ Lời Chúc
           </h2>
           <p className="mx-auto mt-4 max-w-xl text-sm font-light leading-relaxed text-gray-500 md:text-base">
@@ -142,7 +143,7 @@ export const WeddingWishes = () => {
 
         <div className="grid items-start gap-8 lg:grid-cols-[1.05fr_0.95fr]">
           <div
-            className={`rounded-[2rem] border border-white/80 bg-white/75 p-6 shadow-[0_25px_70px_rgba(92,35,45,0.12)] backdrop-blur md:p-9 transition-all duration-1000 delay-200 ${
+            className={`rounded-[1.75rem] border border-white/80 bg-white/75 p-5 shadow-[0_25px_70px_rgba(92,35,45,0.12)] backdrop-blur transition-all duration-1000 delay-200 sm:rounded-[2rem] sm:p-6 md:p-9 ${
               isVisible ? "translate-x-0 opacity-100" : "-translate-x-8 opacity-0"
             }`}
           >
@@ -182,7 +183,7 @@ export const WeddingWishes = () => {
                   maxLength={50}
                   required
                   placeholder="Ví dụ: Gia đình ...."
-                  className="w-full rounded-2xl border border-[#800020]/10 bg-white px-5 py-3.5 text-sm text-gray-700 outline-none transition placeholder:text-gray-300 focus:border-[#d4af37] focus:ring-4 focus:ring-[#d4af37]/10"
+                  className="w-full rounded-2xl border border-[#800020]/10 bg-white px-4 py-3.5 text-base text-gray-700 outline-none transition placeholder:text-gray-300 focus:border-[#d4af37] focus:ring-4 focus:ring-[#d4af37]/10 sm:px-5 sm:text-sm"
                 />
               </label>
 
@@ -197,7 +198,7 @@ export const WeddingWishes = () => {
                   required
                   rows={5}
                   placeholder="Viết điều bạn muốn gửi đến cô dâu và chú rể..."
-                  className="w-full resize-none rounded-2xl border border-[#800020]/10 bg-white px-5 py-4 text-sm leading-relaxed text-gray-700 outline-none transition placeholder:text-gray-300 focus:border-[#d4af37] focus:ring-4 focus:ring-[#d4af37]/10"
+                  className="w-full resize-none rounded-2xl border border-[#800020]/10 bg-white px-4 py-4 text-base leading-relaxed text-gray-700 outline-none transition placeholder:text-gray-300 focus:border-[#d4af37] focus:ring-4 focus:ring-[#d4af37]/10 sm:px-5 sm:text-sm"
                 />
                 <span className="mt-1 block text-right text-[10px] text-gray-300">
                   {message.length}/300
@@ -231,7 +232,7 @@ export const WeddingWishes = () => {
               isVisible ? "translate-x-0 opacity-100" : "translate-x-8 opacity-0"
             }`}
           >
-            <div className="mb-5 flex items-end justify-between px-2">
+            <div className="mb-5 flex flex-col items-start gap-3 px-2 min-[390px]:flex-row min-[390px]:items-end min-[390px]:justify-between">
               <div>
                 <p className="font-script text-3xl text-[#800020]">Những lời yêu thương</p>
                 <p className="text-xs text-gray-400">Đồng bộ cho tất cả khách mời</p>
@@ -286,7 +287,8 @@ export const WeddingWishes = () => {
         </div>
       </div>
 
-      {isSent && (
+      {isSent &&
+        createPortal(
         <div
           role="dialog"
           aria-modal="true"
@@ -336,8 +338,9 @@ export const WeddingWishes = () => {
               Chạm bên ngoài để đóng
             </p>
           </div>
-        </div>
-      )}
+        </div>,
+          document.body,
+        )}
     </section>
   );
 };

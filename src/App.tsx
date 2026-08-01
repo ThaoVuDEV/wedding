@@ -57,7 +57,9 @@ function App() {
     if (containerRef.current) {
       setIsScrolling(true);
       const container = containerRef.current;
-      const children = Array.from(container.children) as HTMLElement[];
+      const children = Array.from(
+        container.querySelectorAll<HTMLElement>(".section"),
+      );
       const target = children[currentPage]?.offsetTop ?? 0;
       container.scrollTo({ top: target, behavior: "smooth" });
 
@@ -80,7 +82,9 @@ function App() {
         const container = containerRef.current;
         const scrollPosition = container.scrollTop;
 
-        const children = Array.from(container.children) as HTMLElement[];
+        const children = Array.from(
+          container.querySelectorAll<HTMLElement>(".section"),
+        );
         let nearest = 0;
         let minDist = Infinity;
 
@@ -141,30 +145,30 @@ function App() {
   }, [currentPage, sections.length, isInvitationOpen]);
 
   return (
-    <div className="relative w-screen h-screen overflow-hidden app-shell">
+    <div className="relative h-[100dvh] w-full overflow-hidden app-shell">
       {!isInvitationOpen && (
-        <div className="invitation-overlay fixed inset-0 z-[100] flex items-center justify-center bg-[#fdfaf6] transition-opacity duration-1000">
+        <div className="invitation-overlay fixed inset-0 z-[100] flex items-center justify-center bg-[#fdfaf6] px-4 py-[max(1rem,env(safe-area-inset-top))] transition-opacity duration-1000">
           {/* Lớp nền mờ ảo phía sau */}
           <div className="absolute inset-0 bg-gradient-to-br from-[#800020] via-[#5f0018] to-[#2f000c]" />
 
-          <div className="relative w-[88%] max-w-[430px] overflow-hidden rounded-[2.5rem] border border-[#d4af37]/40 bg-[#6d001b] p-8 text-center text-white shadow-[0_30px_90px_rgba(0,0,0,0.45)] md:p-12">
+          <div className="relative w-full max-w-[430px] overflow-hidden rounded-[2rem] border border-[#d4af37]/40 bg-[#6d001b] p-6 text-center text-white shadow-[0_30px_90px_rgba(0,0,0,0.45)] sm:rounded-[2.5rem] sm:p-8 md:p-12">
             <div className="absolute -left-10 -top-16 font-script text-[13rem] leading-none text-white/[0.035]">D</div>
             <div className="absolute -bottom-20 -right-5 font-script text-[13rem] leading-none text-white/[0.035]">C</div>
             <div className="absolute inset-3 rounded-[1.8rem] border border-[#d4af37]/20" />
 
             <p className="relative text-[9px] uppercase tracking-[0.55em] text-[#e4ca77]">Private invitation</p>
-            <div className="relative mx-auto my-8 flex h-24 w-24 items-center justify-center rounded-full border border-[#d4af37]/60">
+            <div className="relative mx-auto my-5 flex h-20 w-20 items-center justify-center rounded-full border border-[#d4af37]/60 sm:my-8 sm:h-24 sm:w-24">
               <WeddingMonogram className="text-5xl text-[#f7e5a8]" />
             </div>
-            <h1 className="relative font-script text-5xl leading-tight text-[#fff8e6] md:text-6xl">{COUPLE.groomName}</h1>
+            <h1 className="relative font-script text-4xl leading-tight text-[#fff8e6] sm:text-5xl md:text-6xl">{COUPLE.groomName}</h1>
             <p className="relative my-1 font-script text-2xl text-[#d4af37]">and</p>
-            <h1 className="relative font-script text-5xl leading-tight text-[#fff8e6] md:text-6xl">{COUPLE.brideName}</h1>
-            <div className="relative mx-auto my-8 h-px w-24 bg-[#d4af37]/50" />
+            <h1 className="relative font-script text-4xl leading-tight text-[#fff8e6] sm:text-5xl md:text-6xl">{COUPLE.brideName}</h1>
+            <div className="relative mx-auto my-5 h-px w-24 bg-[#d4af37]/50 sm:my-8" />
             <p className="relative text-xs uppercase tracking-[0.3em] text-white/65">XX · 11 · 2026</p>
             <p className="relative mt-3 text-xs font-light text-white/45">Trân trọng mời bạn đến chung vui</p>
             <button
               type="button"
-              className="group relative mt-8 overflow-hidden rounded-full bg-[#f7e5a8] px-10 py-3.5 text-[10px] font-bold uppercase tracking-[0.3em] text-[#800020] transition hover:-translate-y-0.5 hover:bg-white"
+              className="group relative mt-6 min-h-12 overflow-hidden rounded-full bg-[#f7e5a8] px-9 py-3 text-[10px] font-bold uppercase tracking-[0.3em] text-[#800020] transition hover:-translate-y-0.5 hover:bg-white sm:mt-8"
               onClick={() => setIsInvitationOpen(true)}
             >
               <span className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/70 to-transparent transition-transform duration-700 group-hover:translate-x-full" />
@@ -188,7 +192,7 @@ function App() {
       {/* Main container */}
       <div
         ref={containerRef}
-        className={`relative w-full h-screen overflow-y-scroll transition-opacity duration-700 ${
+        className={`relative h-[100dvh] w-full overflow-x-hidden overflow-y-auto transition-opacity duration-700 ${
           isInvitationOpen ? "opacity-100" : "opacity-0 pointer-events-none"
         }`}
         style={{

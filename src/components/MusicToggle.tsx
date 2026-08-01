@@ -101,7 +101,7 @@ export const MusicToggle: React.FC<MusicToggleProps> = ({
       />
       <button
         onClick={handleToggle}
-        className={`music-button fixed top-4 right-4 md:top-6 md:right-6 z-50 w-10 h-10 md:w-12 md:h-12 rounded-full flex items-center justify-center transition-all transform hover:scale-105 ${
+        className={`music-button fixed right-3 top-[max(0.75rem,env(safe-area-inset-top))] z-50 flex h-11 w-11 items-center justify-center rounded-full transition-all transform hover:scale-105 md:right-6 md:top-6 md:h-12 md:w-12 ${
           isPlaying
             ? "playing bg-burgundy text-white shadow-lg"
             : "paused bg-white text-burgundy shadow-lg border-2 border-burgundy"

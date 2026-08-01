@@ -49,11 +49,11 @@ export const WeddingGallery = ({ coverImage, images = [] }: WeddingGalleryProps)
   }, [activePhoto]);
 
   return (
-    <section ref={rootRef} className="relative min-h-screen overflow-hidden bg-[#f4ebe3] px-4 py-20 sm:px-6">
+    <section ref={rootRef} className="relative min-h-[100svh] overflow-hidden bg-[#f4ebe3] px-3 py-14 sm:px-6 sm:py-20">
       <div className="mx-auto w-full max-w-6xl">
-        <header className={`mb-10 text-center transition-all duration-1000 ${isVisible ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"}`}>
+        <header className={`mb-8 text-center transition-all duration-1000 sm:mb-10 ${isVisible ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"}`}>
           <p className="text-[10px] uppercase tracking-[0.5em] text-[#a8872b]">Our visual diary</p>
-          <h2 className="mt-3 font-script text-5xl text-[#800020] sm:text-7xl">Chuyện Mình Qua Ảnh</h2>
+          <h2 className="mt-3 font-script text-4xl text-[#800020] min-[380px]:text-5xl sm:text-7xl">Chuyện Mình Qua Ảnh</h2>
           <p className="mx-auto mt-4 max-w-lg text-sm font-light leading-7 text-gray-500">
             Nơi chúng mình lưu lại những khoảnh khắc đẹp nhất trước ngày về chung một nhà.
           </p>
