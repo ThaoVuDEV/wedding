@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 
 interface WeddingPhoto {
   src: string;
@@ -23,6 +24,7 @@ const EmptyPhoto = ({ label }: { label: string }) => (
 export const WeddingGallery = ({ coverImage, images = [] }: WeddingGalleryProps) => {
   const rootRef = useRef<HTMLElement | null>(null);
   const [isVisible, setIsVisible] = useState(false);
+  const [activePhoto, setActivePhoto] = useState<WeddingPhoto | null>(null);
 
   useEffect(() => {
     const element = rootRef.current;
@@ -34,6 +36,17 @@ export const WeddingGallery = ({ coverImage, images = [] }: WeddingGalleryProps)
     observer.observe(element);
     return () => observer.disconnect();
   }, []);
+
+  useEffect(() => {
+    if (!activePhoto) return;
+
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setActivePhoto(null);
+    };
+
+    window.addEventListener("keydown", closeOnEscape);
+    return () => window.removeEventListener("keydown", closeOnEscape);
+  }, [activePhoto]);
 
   return (
     <section ref={rootRef} className="relative min-h-screen overflow-hidden bg-[#f4ebe3] px-4 py-20 sm:px-6">
@@ -49,7 +62,19 @@ export const WeddingGallery = ({ coverImage, images = [] }: WeddingGalleryProps)
         <div className={`relative overflow-hidden rounded-[2rem] border border-white/80 bg-white p-2 shadow-[0_24px_80px_rgba(92,35,45,0.12)] transition-all delay-200 duration-1000 sm:rounded-[2.75rem] sm:p-3 ${isVisible ? "scale-100 opacity-100" : "scale-[0.97] opacity-0"}`}>
           <div className="relative aspect-[4/5] overflow-hidden rounded-[1.6rem] sm:aspect-[16/8] sm:rounded-[2.25rem]">
             {coverImage ? (
-              <img src={coverImage} alt="Ảnh bìa cưới của Bùi Diễn và Ngọc Chinh" className="h-full w-full object-cover" />
+              <button
+                type="button"
+                aria-label="Xem ảnh bìa cưới"
+                onClick={() =>
+                  setActivePhoto({
+                    src: coverImage,
+                    alt: "Ảnh bìa cưới của Bùi Diễn và Ngọc Chinh",
+                  })
+                }
+                className="h-full w-full cursor-zoom-in"
+              >
+                <img src={coverImage} alt="Ảnh bìa cưới của Bùi Diễn và Ngọc Chinh" className="h-full w-full object-cover" />
+              </button>
             ) : (
               <EmptyPhoto label="Ảnh bìa cưới" />
             )}
@@ -71,7 +96,14 @@ export const WeddingGallery = ({ coverImage, images = [] }: WeddingGalleryProps)
               >
                 <div className="aspect-[3/4] overflow-hidden">
                   {photo ? (
-                    <img src={photo.src} alt={photo.alt} loading="lazy" className="h-full w-full object-cover transition duration-700 hover:scale-105" />
+                    <button
+                      type="button"
+                      aria-label={`Xem ${photo.alt}`}
+                      onClick={() => setActivePhoto(photo)}
+                      className="h-full w-full cursor-zoom-in overflow-hidden"
+                    >
+                      <img src={photo.src} alt={photo.alt} loading="lazy" className="h-full w-full object-cover transition duration-700 hover:scale-105" />
+                    </button>
                   ) : (
                     <EmptyPhoto label={label} />
                   )}
@@ -85,6 +117,38 @@ export const WeddingGallery = ({ coverImage, images = [] }: WeddingGalleryProps)
           Ảnh bìa + 4 ảnh album đang chờ cập nhật
         </p>
       </div>
+
+      {activePhoto &&
+        createPortal(
+          <div
+            role="dialog"
+            aria-modal="true"
+            aria-label="Xem ảnh cưới"
+            className="fixed inset-0 z-[2000] flex items-center justify-center bg-black/90 p-3 backdrop-blur-md sm:p-8"
+            onClick={() => setActivePhoto(null)}
+          >
+            <button
+              type="button"
+              aria-label="Đóng ảnh"
+              onClick={() => setActivePhoto(null)}
+              className="absolute right-4 top-4 z-10 flex h-12 w-12 items-center justify-center rounded-full border border-white/20 bg-black/30 text-3xl text-white sm:right-7 sm:top-7"
+            >
+              ×
+            </button>
+            <div className="flex h-full w-full items-center justify-center">
+              <img
+                src={activePhoto.src}
+                alt={activePhoto.alt}
+                onClick={(event) => event.stopPropagation()}
+                className="max-h-[92dvh] max-w-full rounded-xl object-contain shadow-2xl sm:rounded-2xl"
+              />
+            </div>
+            <p className="pointer-events-none absolute bottom-5 left-1/2 -translate-x-1/2 rounded-full bg-black/45 px-4 py-2 text-[9px] uppercase tracking-[0.25em] text-white/65">
+              Chạm bên ngoài để đóng
+            </p>
+          </div>,
+          document.body,
+        )}
     </section>
   );
 };
