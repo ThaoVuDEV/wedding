@@ -8,6 +8,7 @@ import { MusicToggle } from "./components/MusicToggle";
 import { Confetti } from "./components/Confetti";
 import { PetalFall } from "./components/PetalFall";
 import { WeddingMonogram } from "./components/WeddingMonogram";
+import { WeddingGallery } from "./components/WeddingGallery";
 import "./index.css";
 
 const COUPLE = {
@@ -37,6 +38,7 @@ function App() {
       story="Chúng mình không mong một câu chuyện hoàn hảo, chỉ mong mỗi ngày đều có thể cùng nhau ăn một bữa cơm, kể vài chuyện nhỏ và bình yên đi qua những tháng năm dài. Tháng Mười Một này, chúng mình muốn chia sẻ niềm vui ấy với những người thân thương nhất."
       quote="Bùi Diễn & Ngọc Chinh"
     />,
+    <WeddingGallery key="gallery" coverImage="" images={[]} />,
     <WeddingSchedule
       key="schedule"
       groomName={COUPLE.groomName}
