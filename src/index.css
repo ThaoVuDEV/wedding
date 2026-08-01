@@ -475,6 +475,31 @@ body {
   animation: gift-cta-pulse 1.6s ease-in-out infinite;
 }
 
+/* Giữ nội dung dễ đọc trên các màn hình điện thoại iPhone/Samsung. */
+@media (max-width: 639px) {
+  .text-\[8px\] {
+    font-size: 11px;
+  }
+
+  .text-\[9px\] {
+    font-size: 11px;
+  }
+
+  .text-\[10px\] {
+    font-size: 12px;
+  }
+
+  .text-xs {
+    font-size: 13px;
+    line-height: 1.45;
+  }
+
+  .text-sm {
+    font-size: 15px;
+    line-height: 1.65;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .gift-cta {
     animation: none;
