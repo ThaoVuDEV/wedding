@@ -1,0 +1,476 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  @apply box-border;
+}
+
+html,
+body,
+#root {
+  @apply h-full w-full;
+}
+
+body {
+  margin: 0;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  background: #fbf7f1;
+}
+
+.font-serif {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+}
+
+.font-script {
+  font-family: "Dancing Script", cursive;
+}
+
+/* Entry animations */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fadeUp {
+  animation: fadeInUp 0.8s ease forwards;
+}
+
+.animate-fadeUp-delay-200 {
+  animation: fadeInUp 0.8s ease 0.2s forwards;
+}
+
+.animate-fadeUp-delay-400 {
+  animation: fadeInUp 0.8s ease 0.4s forwards;
+}
+
+/* Music toggle icon styles */
+.music-button {
+  /* position: relative; */
+  overflow: visible;
+}
+
+.music-button .note {
+  width: 1rem;
+  height: 1rem;
+  display: block;
+  transition: transform 0.3s ease;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.music-button.playing .note {
+  animation: spin 2s linear infinite;
+}
+
+/* Draw a diagonal slash when paused */
+.music-button.paused::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%) rotate(45deg);
+  width: 60%;
+  height: 2px;
+  background: currentColor;
+  border-radius: 1px;
+  pointer-events: none;
+}
+
+/* Envelope opening animation - left flap */
+@keyframes envelopeLeftOpen {
+  0% {
+    opacity: 1;
+    transform: rotateY(0deg);
+    transform-origin: left center;
+  }
+  100% {
+    opacity: 0;
+    transform: rotateY(-180deg) translateX(-30px);
+    transform-origin: left center;
+  }
+}
+
+/* Envelope opening animation - right flap */
+@keyframes envelopeRightOpen {
+  0% {
+    opacity: 1;
+    transform: rotateY(0deg);
+    transform-origin: right center;
+  }
+  100% {
+    opacity: 0;
+    transform: rotateY(180deg) translateX(30px);
+    transform-origin: right center;
+  }
+}
+
+/* Gift box wiggle animation - shake like opening a gift */
+@keyframes wiggle {
+  0%,
+  100% {
+    transform: translateX(0) rotateZ(0deg);
+  }
+  25% {
+    transform: translateX(-8px) rotateZ(-3deg);
+  }
+  50% {
+    transform: translateX(0) rotateZ(0deg);
+  }
+  75% {
+    transform: translateX(8px) rotateZ(3deg);
+  }
+}
+
+.animate-wiggle {
+  animation: wiggle 2s ease-in-out infinite;
+}
+
+/* Ribbon animation */
+
+/* Envelope wrapper background */
+@keyframes envelopeBackgroundFade {
+  0% {
+    opacity: 1;
+  }
+  70% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+.envelope-wrapper {
+  perspective: 1200px;
+}
+
+.envelope-left-flap {
+  animation: envelopeLeftOpen 2s ease-in-out forwards;
+}
+
+.envelope-right-flap {
+  animation: envelopeRightOpen 2s ease-in-out forwards;
+}
+
+.envelope-background {
+  animation: envelopeBackgroundFade 2s ease-in-out forwards;
+}
+
+/* Letter-by-letter reveal */
+@keyframes letterIn {
+  0% {
+    opacity: 0;
+    transform: translateY(12px) rotate(-2deg) scale(0.98);
+  }
+  60% {
+    opacity: 1;
+    transform: translateY(-4px) rotate(2deg) scale(1.02);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) rotate(0) scale(1);
+  }
+}
+
+.letter {
+  display: inline-block;
+  opacity: 0;
+  transform-origin: center;
+  animation-name: letterIn;
+  animation-duration: 640ms;
+  animation-fill-mode: forwards;
+  will-change: transform, opacity;
+}
+
+.letter-slow {
+  animation-duration: 820ms;
+}
+
+/* .app-shell {
+  background: radial-gradient(
+    circle at 50% 20%,
+    #9b1721 0%,
+    #6b0811 55%,
+    #5b060f 100%
+  );
+} */
+
+.flower-decoration {
+  position: fixed;
+  z-index: 5;
+  width: clamp(140px, 18vw, 280px);
+  opacity: 0.24;
+  pointer-events: none;
+  --mirror: 1;
+  animation: floatFlower 5s ease-in-out infinite;
+}
+
+.flower-left {
+  left: 0;
+  top: 12%;
+}
+
+.flower-right {
+  right: 0;
+  bottom: 8%;
+  --mirror: -1;
+  animation-delay: 1.4s;
+}
+
+@keyframes floatFlower {
+  0%,
+  100% {
+    transform: scaleX(var(--mirror)) translateY(0);
+  }
+  50% {
+    transform: scaleX(var(--mirror)) translateY(-12px);
+  }
+}
+
+.invitation-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  /* background: rgba(84, 6, 14, 0.7); */
+  backdrop-filter: blur(4px);
+}
+
+.invitation-card {
+  width: min(560px, 92vw);
+  min-height: 36rem;
+  border-radius: 18px;
+  background-color: #fff;
+  background-repeat: no-repeat;
+  box-shadow: 0 22px 50px rgba(0, 0, 0, 0.35);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  padding: 2.25rem 1.5rem;
+  position: relative;
+  animation: cardIntro 500ms ease-out;
+}
+
+@keyframes cardIntro {
+  from {
+    opacity: 0;
+    transform: translateY(18px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.invite-seal {
+  width: 66px;
+  height: 66px;
+  border-radius: 50%;
+  /* background: #edbbbf;
+  box-shadow: 0 8px 18px rgba(134, 19, 29, 0.35); */
+}
+
+.invite-name {
+  color: #741019;
+  font-size: clamp(1.6rem, 3.5vw, 2.2rem);
+  line-height: 1.15;
+  margin: 0;
+}
+
+.invite-divider {
+  width: 42px;
+  height: 1px;
+  background: #d9a8ad;
+}
+
+.invite-date,
+.invite-label {
+  margin: 0;
+  color: #6d3940;
+}
+
+.invite-button {
+  margin-top: 0.5rem;
+  border: 0;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #e74c5c 0%, #c41e3a 50%, #8b1528 100%);
+  color: #fff;
+  padding: 0.62rem 1.5rem;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition:
+    transform 180ms ease,
+    box-shadow 180ms ease,
+    background 180ms ease;
+  box-shadow: 0 12px 24px rgba(196, 30, 58, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  font-weight: 500;
+  letter-spacing: 0.5px;
+}
+
+.invite-button::after {
+  content: "";
+  position: absolute;
+  top: -10%;
+  left: -120%;
+  width: 40%;
+  height: 120%;
+  background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.9) 50%, rgba(255,255,255,0) 100%);
+  transform: skewX(-20deg) translateX(0);
+  filter: blur(6px);
+  opacity: 0;
+  pointer-events: none;
+  border-radius: 12px;
+  animation: sheen 4s linear infinite;
+}
+
+.invite-button:hover {
+  transform: translateY(-3px);
+  background: linear-gradient(135deg, #f05a6a 0%, #d4293f 50%, #9e1a32 100%);
+  box-shadow: 0 16px 32px rgba(196, 30, 58, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+@keyframes sheen {
+  0% {
+    left: -120%;
+    opacity: 0;
+    transform: skewX(-20deg) translateX(0);
+  }
+  8% {
+    opacity: 0.85;
+  }
+  12% {
+    left: 30%;
+    opacity: 0.95;
+    transform: skewX(-20deg) translateX(0);
+  }
+  30% {
+    left: 120%;
+    opacity: 0;
+  }
+  100% {
+    left: 120%;
+    opacity: 0;
+  }
+}
+
+.section-fade {
+  transition:
+    opacity 600ms ease,
+    transform 600ms ease;
+  opacity: 0.78;
+  transform: scale(0.985);
+}
+
+.section-fade.is-active {
+  opacity: 1;
+  transform: scale(1);
+}
+
+@keyframes float {
+  0% { transform: translateY(-10%) rotate(0deg); opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
+}
+.petal {
+  position: absolute;
+  background: #ffb7c5; /* Màu hồng nhạt */
+  border-radius: 150% 0 150% 0;
+  animation: float 10s infinite linear;
+  pointer-events: none;
+  z-index: 1;
+}
+
+@keyframes custom-wiggle {
+  0%, 100% { transform: rotate(-3deg); }
+  50% { transform: rotate(3deg); }
+}
+
+@keyframes gold-glow {
+  0%, 100% { box-shadow: 0 0 20px rgba(212, 175, 55, 0.5); }
+  50% { box-shadow: 0 0 40px rgba(212, 175, 55, 0.8); }
+}
+
+.animate-wiggle {
+  animation: custom-wiggle 0.5s ease-in-out infinite;
+}
+
+.animate-glow {
+  animation: gold-glow 2s infinite;
+}
+
+@keyframes wiggle {
+  0%, 100% { transform: rotate(-3deg); }
+  50% { transform: rotate(3deg); }
+}
+
+@keyframes gold-glow {
+  0%, 100% { box-shadow: 0 0 15px rgba(212, 175, 55, 0.3); }
+  50% { shadow: 0 0 30px rgba(212, 175, 55, 0.6); }
+}
+
+.animate-wiggle {
+  animation: wiggle 0.5s ease-in-out infinite;
+}
+
+.animate-gold-glow {
+  animation: gold-glow 2s infinite;
+}
+
+@keyframes heart-blink {
+  0%, 100% {
+    filter: drop-shadow(0 0 2px rgba(128, 0, 32, 0.6));
+    transform: scale(1);
+  }
+  50% {
+    filter: drop-shadow(0 0 10px rgba(255, 0, 0, 0.8));
+    transform: scale(1.1);
+  }
+}
+
+.animate-heart-blink {
+  animation: heart-blink 1.5s infinite;
+}
+
+@keyframes gift-cta-pulse {
+  0%,
+  100% {
+    box-shadow:
+      0 0 0 0 rgba(247, 229, 168, 0.55),
+      0 10px 30px rgba(212, 175, 55, 0.2);
+    transform: scale(1);
+  }
+  50% {
+    box-shadow:
+      0 0 0 12px rgba(247, 229, 168, 0),
+      0 12px 38px rgba(212, 175, 55, 0.5);
+    transform: scale(1.045);
+  }
+}
+
+.gift-cta {
+  animation: gift-cta-pulse 1.6s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gift-cta {
+    animation: none;
+  }
+}
