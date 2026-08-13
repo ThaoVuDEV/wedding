@@ -5,7 +5,6 @@ import { WeddingWishes } from "./components/WeddingWishes";
 import { WeddingSchedule } from "./components/WeddingSchedule";
 import { ThankYou } from "./components/ThankYou";
 import { MusicToggle } from "./components/MusicToggle";
-import { Confetti } from "./components/Confetti";
 import { PetalFall } from "./components/PetalFall";
 import { WeddingMonogram } from "./components/WeddingMonogram";
 import { WeddingGallery } from "./components/WeddingGallery";
@@ -209,7 +208,6 @@ function App() {
             shouldAutoPlay={isInvitationOpen}
           />
           {currentPage === 0 && <PetalFall />}
-          {currentPage === 0 && <Confetti />}
         </>
       )}
 
