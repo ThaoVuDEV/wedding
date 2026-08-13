@@ -10,23 +10,24 @@ export const MusicToggle: React.FC<MusicToggleProps> = ({
   shouldAutoPlay = false,
 }) => {
   const [isPlaying, setIsPlaying] = useState(false);
+  const [isMuted, setIsMuted] = useState(false);
   const audioRef = useRef<HTMLAudioElement>(null);
 
   const handleToggle = async () => {
     if (!audioRef.current) return;
 
     try {
-      if (isPlaying) {
+      if (isPlaying && !isMuted) {
         audioRef.current.pause();
         setIsPlaying(false);
+      } else if (isPlaying && isMuted) {
+        audioRef.current.muted = false;
+        setIsMuted(false);
       } else {
-        // Reset to beginning if needed
-        audioRef.current.currentTime = 0;
-        const playPromise = audioRef.current.play();
-        if (playPromise !== undefined) {
-          await playPromise;
-          setIsPlaying(true);
-        }
+        audioRef.current.muted = false;
+        setIsMuted(false);
+        await audioRef.current.play();
+        setIsPlaying(true);
       }
     } catch (err) {
       console.error("Lỗi phát nhạc:", err);
@@ -41,35 +42,32 @@ export const MusicToggle: React.FC<MusicToggleProps> = ({
       if (!audioRef.current) return;
       try {
         audioRef.current.muted = false;
-        const playPromise = audioRef.current.play();
-        if (playPromise !== undefined) {
-          await playPromise;
-          setIsPlaying(true);
-        }
+        await audioRef.current.play();
+        setIsMuted(false);
+        setIsPlaying(true);
       } catch (err) {
         // If unmuted autoplay fails, try muted
         try {
           audioRef.current.muted = true;
-          const playPromise = audioRef.current.play();
-          if (playPromise !== undefined) {
-            await playPromise;
-            setIsPlaying(true);
-          }
+          await audioRef.current.play();
+          setIsMuted(true);
+          setIsPlaying(true);
         } catch (err2) {
           setIsPlaying(false);
         }
       }
     };
 
-    const handleFirstInteraction = async () => {
+    const handleFirstInteraction = async (event: Event) => {
       if (!audioRef.current) return;
+      const target = event.target as HTMLElement | null;
+      if (target?.closest(".music-button")) return;
       try {
         audioRef.current.muted = false;
-        const playPromise = audioRef.current.play();
-        if (playPromise !== undefined) {
-          await playPromise;
-          setIsPlaying(true);
-        }
+        await audioRef.current.play();
+        setIsMuted(false);
+        setIsPlaying(true);
+        window.removeEventListener("pointerdown", handleFirstInteraction);
       } catch (err) {
         // ignore
       }
@@ -77,15 +75,11 @@ export const MusicToggle: React.FC<MusicToggleProps> = ({
 
     // Delay autoplay slightly to ensure browser readiness
     const timer = setTimeout(tryAutoplay, 500);
-    window.addEventListener("click", handleFirstInteraction, { once: true });
-    window.addEventListener("touchstart", handleFirstInteraction, {
-      once: true,
-    });
+    window.addEventListener("pointerdown", handleFirstInteraction);
 
     return () => {
       clearTimeout(timer);
-      window.removeEventListener("click", handleFirstInteraction);
-      window.removeEventListener("touchstart", handleFirstInteraction);
+      window.removeEventListener("pointerdown", handleFirstInteraction);
     };
   }, [shouldAutoPlay]);
 
@@ -95,19 +89,22 @@ export const MusicToggle: React.FC<MusicToggleProps> = ({
         ref={audioRef}
         src={audioUrl}
         loop
-        preload="auto"
+        preload="metadata"
         onPlay={() => setIsPlaying(true)}
-        onPause={() => setIsPlaying(false)}
+        onPause={() => {
+          setIsPlaying(false);
+          setIsMuted(false);
+        }}
       />
       <button
         onClick={handleToggle}
         className={`music-button fixed right-3 top-[max(0.75rem,env(safe-area-inset-top))] z-50 flex h-11 w-11 items-center justify-center rounded-full transition-all transform hover:scale-105 md:right-6 md:top-6 md:h-12 md:w-12 ${
-          isPlaying
+          isPlaying && !isMuted
             ? "playing bg-burgundy text-white shadow-lg"
             : "paused bg-white text-burgundy shadow-lg border-2 border-burgundy"
         }`}
-        title={isPlaying ? "Tắt nhạc" : "Bật nhạc"}
-        aria-pressed={isPlaying}
+        title={isPlaying && !isMuted ? "Tắt nhạc" : "Bật nhạc"}
+        aria-pressed={isPlaying && !isMuted}
       >
         <svg
           className="note w-4 h-4"

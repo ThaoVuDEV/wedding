@@ -1,14 +1,4 @@
 import { FormEvent, useEffect, useRef, useState } from "react";
-import {
-  addDoc,
-  collection,
-  limit,
-  onSnapshot,
-  orderBy,
-  query,
-  serverTimestamp,
-} from "firebase/firestore";
-import { db } from "../lib/firebase";
 import { createPortal } from "react-dom";
 
 interface Wish {
@@ -51,6 +41,7 @@ export const WeddingWishes = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [currentWishPage, setCurrentWishPage] = useState(1);
+  const hasLoadedWishesRef = useRef(false);
 
   const totalWishPages = Math.max(
     1,
@@ -66,7 +57,9 @@ export const WeddingWishes = () => {
     if (!el) return;
 
     const observer = new IntersectionObserver(
-      ([entry]) => setIsVisible(entry.isIntersecting),
+      ([entry]) => {
+        if (entry.isIntersecting) setIsVisible(true);
+      },
       { threshold: 0.15 },
     );
     observer.observe(el);
@@ -78,39 +71,70 @@ export const WeddingWishes = () => {
   }, [totalWishPages]);
 
   useEffect(() => {
-    const wishesQuery = query(
-      collection(db, "wishes"),
-      orderBy("createdAt", "desc"),
-      limit(12),
-    );
+    if (!isVisible || hasLoadedWishesRef.current) return;
+    hasLoadedWishesRef.current = true;
 
-    return onSnapshot(
-      wishesQuery,
-      (snapshot) => {
-        setWishes(
-          snapshot.docs.map((document) => {
-            const data = document.data();
-            const createdAt = data.createdAt?.toDate?.();
+    let cancelled = false;
+    let unsubscribe = () => {};
 
-            return {
-              id: document.id,
-              name: String(data.name ?? "Khách mời"),
-              message: String(data.message ?? ""),
-              createdAt: createdAt instanceof Date ? createdAt : null,
-            };
-          }),
+    const loadWishes = async () => {
+      try {
+        const [{ collection, limit, onSnapshot, orderBy, query }, { db }] = await Promise.all([
+          import("firebase/firestore"),
+          import("../lib/firebase"),
+        ]);
+
+        if (cancelled) return;
+
+        const wishesQuery = query(
+          collection(db, "wishes"),
+          orderBy("createdAt", "desc"),
+          limit(12),
         );
-        setErrorMessage("");
-        setIsLoading(false);
-      },
-      () => {
+
+        unsubscribe = onSnapshot(
+          wishesQuery,
+          (snapshot) => {
+            if (cancelled) return;
+            setWishes(
+              snapshot.docs.map((document) => {
+                const data = document.data();
+                const createdAt = data.createdAt?.toDate?.();
+
+                return {
+                  id: document.id,
+                  name: String(data.name ?? "Khách mời"),
+                  message: String(data.message ?? ""),
+                  createdAt: createdAt instanceof Date ? createdAt : null,
+                };
+              }),
+            );
+            setErrorMessage("");
+            setIsLoading(false);
+          },
+          () => {
+            setErrorMessage(
+              "Chưa thể tải lời chúc. Vui lòng kiểm tra Firestore và Security Rules.",
+            );
+            setIsLoading(false);
+          },
+        );
+
+      } catch {
+        if (cancelled) return;
         setErrorMessage(
           "Chưa thể tải lời chúc. Vui lòng kiểm tra Firestore và Security Rules.",
         );
         setIsLoading(false);
-      },
-    );
-  }, []);
+      }
+    };
+
+    void loadWishes();
+    return () => {
+      cancelled = true;
+      unsubscribe();
+    };
+  }, [isVisible]);
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -122,6 +146,10 @@ export const WeddingWishes = () => {
     setErrorMessage("");
 
     try {
+      const [{ addDoc, collection, serverTimestamp }, { db }] = await Promise.all([
+        import("firebase/firestore"),
+        import("../lib/firebase"),
+      ]);
       await addDoc(collection(db, "wishes"), {
         name: guestName,
         message: wishMessage,
@@ -154,7 +182,7 @@ export const WeddingWishes = () => {
   return (
     <section
       ref={rootRef}
-      className="relative min-h-[100svh] w-full overflow-hidden bg-[#f6eee7] py-14 sm:py-20"
+      className="relative min-h-[100svh] w-full overflow-hidden bg-[#f8f4ef] py-14 sm:py-20"
     >
       <div className="absolute -top-24 -left-24 h-72 w-72 rounded-full bg-[#800020]/10 blur-3xl" />
       <div className="absolute -bottom-24 -right-24 h-80 w-80 rounded-full bg-[#d4af37]/15 blur-3xl" />
@@ -166,16 +194,8 @@ export const WeddingWishes = () => {
             isVisible ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"
           }`}
         >
-          <p className="mb-3 text-xs uppercase tracking-[0.45em] text-[#d4af37]">
-            Send us some love
-          </p>
-          <h2 className="font-script text-4xl text-[#800020] min-[380px]:text-5xl md:text-7xl">
-            Sổ Lời Chúc
-          </h2>
-          <p className="mx-auto mt-4 max-w-xl text-sm font-light leading-relaxed text-gray-500 md:text-base">
-            Một vài dòng thương mến của bạn sẽ là món quà thật đẹp trong ngày
-            đặc biệt của Bùi Diễn và Ngọc Chinh.
-          </p>
+          <p className="mb-3 text-[9px] uppercase tracking-[0.45em] text-[#b89258]">Gửi một lời thương</p>
+          <h2 className="font-script text-5xl text-[#741d35] min-[380px]:text-6xl md:text-7xl">Sổ Lời Chúc</h2>
         </header>
 
         <div className="grid items-start gap-8 lg:grid-cols-[1.05fr_0.95fr]">
@@ -189,10 +209,10 @@ export const WeddingWishes = () => {
                 ♡
               </span>
               <div>
-                <p className="font-script text-2xl text-[#800020]">
-                  Gửi lời thương
-                </p>
-                <p className="text-xs text-gray-400">Chọn nhanh hoặc tự viết lời chúc</p>
+                  <p className="font-script text-2xl text-[#741d35]">
+                  Gửi lời chúc
+                  </p>
+                <p className="text-xs text-gray-400">Chọn nhanh hoặc viết lời riêng</p>
               </div>
             </div>
 
@@ -271,8 +291,7 @@ export const WeddingWishes = () => {
           >
             <div className="mb-5 flex flex-col items-start gap-3 px-2 min-[390px]:flex-row min-[390px]:items-end min-[390px]:justify-between">
               <div>
-                <p className="font-script text-3xl text-[#800020]">Những lời yêu thương</p>
-                <p className="text-xs text-gray-400">Đồng bộ cho tất cả khách mời</p>
+                <p className="font-script text-3xl text-[#741d35]">Lời chúc từ khách mời</p>
               </div>
               <span className="rounded-full bg-white/70 px-3 py-1 text-xs text-[#800020]">
                 {wishes.length} lời chúc

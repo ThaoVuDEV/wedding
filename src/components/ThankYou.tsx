@@ -24,7 +24,9 @@ export const ThankYou = ({
     const element = rootRef.current;
     if (!element) return;
     const observer = new IntersectionObserver(
-      ([entry]) => setIsVisible(entry.isIntersecting),
+      ([entry]) => {
+        if (entry.isIntersecting) setIsVisible(true);
+      },
       { threshold: 0.2 },
     );
     observer.observe(element);
@@ -37,11 +39,13 @@ export const ThankYou = ({
       <div className="absolute left-1/2 top-1/2 h-[55vw] max-h-[550px] w-[55vw] max-w-[550px] -translate-x-1/2 -translate-y-1/2 rounded-full border border-[#d4af37]/10" />
 
       <div className={`relative mx-auto max-w-3xl text-center transition-all duration-1000 ${isVisible ? "translate-y-0 opacity-100" : "translate-y-10 opacity-0"}`}>
-        <p className="text-[10px] uppercase tracking-[0.55em] text-[#d4af37]">From Diễn & Chinh</p>
-        <div className="mx-auto my-6 flex h-24 w-24 items-center justify-center rounded-full border border-[#d4af37]/50 bg-[#800020]/40 sm:my-9 sm:h-28 sm:w-28">
-          <WeddingMonogram className="text-6xl text-[#f7e5a8]" />
+        <p className="font-serif text-lg tracking-[0.18em] text-[#e4c98f] sm:text-xl">Bùi Diễn <span className="px-1 text-[#d8b777]">&</span> Ngọc Chinh</p>
+        <div className="mx-auto my-7 flex h-28 w-28 items-center justify-center rounded-full border border-[#d8b777]/65 bg-[#741d35]/45 p-2 shadow-[0_14px_40px_rgba(0,0,0,0.18)] sm:my-9 sm:h-32 sm:w-32">
+          <div className="flex h-full w-full items-center justify-center rounded-full border border-[#d8b777]/25">
+            <WeddingMonogram className="text-[4.5rem] text-[#f7e5a8]" />
+          </div>
         </div>
-        <h2 className="font-script text-5xl text-[#fff8e6] sm:text-6xl md:text-8xl">Cảm Ơn Bạn</h2>
+        <h2 className="font-script text-[3.4rem] leading-tight text-[#fff8e6] sm:text-6xl md:text-8xl">Cảm Ơn Bạn</h2>
         <p className="mx-auto mt-5 max-w-xl text-sm font-light leading-7 text-white/60 sm:mt-7 sm:leading-8 md:text-base">{message}</p>
         <p className="mt-6 text-xs uppercase tracking-[0.3em] text-[#d4af37]/75 sm:mt-8 sm:tracking-[0.35em]">{weddingDate}</p>
 
@@ -67,9 +71,8 @@ export const ThankYou = ({
           <div className="relative my-auto w-full max-w-2xl rounded-[2rem] border border-[#d4af37]/30 bg-[#6b001a] p-5 shadow-2xl sm:rounded-[2.5rem] sm:p-7 md:p-10" onClick={(event) => event.stopPropagation()}>
             <button type="button" aria-label="Đóng hộp mừng cưới" onClick={() => setIsGiftModalOpen(false)} className="absolute right-4 top-3 flex h-11 w-11 items-center justify-center rounded-full text-3xl text-white/50 transition hover:text-white sm:right-6 sm:top-5">×</button>
             <div className="mb-5 text-center sm:mb-8">
-              <p className="text-[9px] uppercase tracking-[0.45em] text-[#d4af37]">Wedding gift</p>
+              <p className="text-[9px] uppercase tracking-[0.45em] text-[#d8b777]">Mừng cưới</p>
               <h3 className="mt-3 font-script text-4xl text-[#fff8e6]">Hộp Mừng Cưới</h3>
-              <p className="mt-2 text-xs text-white/45">Thông tin sẽ được cập nhật sau</p>
             </div>
 
             <div className="grid grid-cols-2 gap-2 sm:gap-4">
@@ -77,10 +80,10 @@ export const ThankYou = ({
                 <div key={recipient.role} className="rounded-[1.25rem] border border-white/10 bg-white/5 p-3 text-center sm:rounded-[1.75rem] sm:p-6">
                   <p className="text-[9px] uppercase tracking-[0.35em] text-[#d4af37]/70">{recipient.role}</p>
                   <p className="mt-2 font-script text-2xl text-white">{recipient.name}</p>
-                  <div className="mx-auto my-4 flex aspect-square w-24 items-center justify-center rounded-xl border border-dashed border-white/20 bg-white/5 px-2 text-[8px] uppercase leading-4 tracking-[0.15em] text-white/35 sm:my-5 sm:w-32 sm:rounded-2xl sm:px-4 sm:text-[9px] sm:leading-5 sm:tracking-[0.2em]">QR đang cập nhật</div>
+                  <div className="mx-auto my-4 flex aspect-square w-24 items-center justify-center rounded-xl border border-dashed border-white/20 bg-white/5 px-2 text-[8px] uppercase leading-4 tracking-[0.15em] text-white/35 sm:my-5 sm:w-32 sm:rounded-2xl sm:px-4 sm:text-[9px] sm:leading-5 sm:tracking-[0.2em]">Mã QR</div>
                   <div className="space-y-2 border-t border-white/10 pt-4 text-xs text-white/40">
-                    <p>Ngân hàng: Đang cập nhật</p>
-                    <p>Số tài khoản: Đang cập nhật</p>
+                    <p>Thông tin chuyển khoản</p>
+                    <p>Vui lòng liên hệ gia đình</p>
                   </div>
                 </div>
               ))}

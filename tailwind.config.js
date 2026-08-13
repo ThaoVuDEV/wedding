@@ -7,6 +7,8 @@ export default {
         burgundy: "#800020",
         rose: "#F8E8E0",
         gold: "#D4AF37",
+        wine: "#741D35",
+        cream: "#F8F4EF",
       },
       animation: {
         "border-spin": "border-spin 4s linear infinite",

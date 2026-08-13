@@ -1,11 +1,10 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useMemo } from "react";
 import { Welcome } from "./components/Welcome";
 import { OurStory } from "./components/OurStory";
 import { WeddingWishes } from "./components/WeddingWishes";
 import { WeddingSchedule } from "./components/WeddingSchedule";
 import { ThankYou } from "./components/ThankYou";
 import { MusicToggle } from "./components/MusicToggle";
-import { PetalFall } from "./components/PetalFall";
 import { WeddingMonogram } from "./components/WeddingMonogram";
 import { WeddingGallery } from "./components/WeddingGallery";
 import weddingPhoto1 from "./assets/wedding/1.webp";
@@ -13,11 +12,12 @@ import weddingPhoto2 from "./assets/wedding/2.webp";
 import weddingPhoto3 from "./assets/wedding/3.webp";
 import weddingPhoto4 from "./assets/wedding/4.webp";
 import weddingPhoto5 from "./assets/wedding/5.webp";
+import { WEDDING } from "./config/wedding";
 import "./index.css";
 
 const COUPLE = {
-  groomName: "Bùi Diễn",
-  brideName: "Ngọc Chinh",
+  groomName: WEDDING.groomName,
+  brideName: WEDDING.brideName,
 } as const;
 
 function App() {
@@ -28,16 +28,18 @@ function App() {
   const scrollTimeoutRef = useRef<ReturnType<typeof setTimeout>>();
   const programmaticScrollTimeoutRef = useRef<ReturnType<typeof setTimeout>>();
   const isProgrammaticScrollingRef = useRef(false);
+  const scrollFrameRef = useRef<number | null>(null);
+  const currentPageRef = useRef(0);
 
-  const sections = [
+  const sections = useMemo(() => [
     <Welcome
       key="welcome"
       groomName={COUPLE.groomName}
       brideName={COUPLE.brideName}
       groomAlias="Chú rể"
       brideAlias="Cô dâu"
-      weddingDate="XX · 11 · 2026"
-      weddingTime="XX:XX"
+      weddingDate={WEDDING.dateDisplay}
+      weddingTime={WEDDING.timeDisplay}
     />,
     <WeddingSchedule
       key="schedule"
@@ -47,7 +49,7 @@ function App() {
     <OurStory
       key="story"
       title="Lời Ngỏ"
-      story="Chúng mình không mong một câu chuyện hoàn hảo, chỉ mong mỗi ngày đều có thể cùng nhau ăn một bữa cơm, kể vài chuyện nhỏ và bình yên đi qua những tháng năm dài. Tháng Mười Một này, chúng mình muốn chia sẻ niềm vui ấy với những người thân thương nhất."
+      story="Chúng mình gặp nhau giữa những điều giản dị, rồi chọn cùng nhau đi qua những ngày bình thường. Cảm ơn bạn đã ở đây để chứng kiến chương mới của chúng mình."
       quote="Bùi Diễn & Ngọc Chinh"
     />,
     <WeddingGallery
@@ -63,66 +65,67 @@ function App() {
     <WeddingWishes key="wishes" />,
     <ThankYou
       key="thankyou"
-      weddingDate="XX/11/2026"
+      weddingDate={WEDDING.dateSlash}
       message="Niềm vui của chúng mình sẽ trọn vẹn hơn khi có bạn ở bên. Hẹn gặp bạn vào một ngày thật đẹp của tháng Mười Một."
     />,
-  ];
+  ], []);
 
   // Track the visible section without starting another smooth scroll.
   useEffect(() => {
-    const handleScroll = () => {
+    const container = containerRef.current;
+    if (!container) return;
+
+    const sectionElements = Array.from(
+      container.querySelectorAll<HTMLElement>(".section"),
+    );
+    let sectionOffsets = sectionElements.map((section) => section.offsetTop);
+
+    const updateOffsets = () => {
+      sectionOffsets = sectionElements.map((section) => section.offsetTop);
+    };
+
+    const updateCurrentPage = () => {
+      scrollFrameRef.current = null;
       if (isProgrammaticScrollingRef.current) return;
 
-      if (containerRef.current) {
-        const container = containerRef.current;
-        const scrollPosition = container.scrollTop;
+      const anchor = container.scrollTop + container.clientHeight * 0.35;
+      let nearest = 0;
+      for (let index = 1; index < sectionOffsets.length; index += 1) {
+        if (sectionOffsets[index] <= anchor) nearest = index;
+        else break;
+      }
 
-        const children = Array.from(
-          container.querySelectorAll<HTMLElement>(".section"),
-        );
-        let nearest = 0;
-        let minDist = Infinity;
-
-        children.forEach((child, i) => {
-          const offset = child.offsetTop;
-          const dist = Math.abs(scrollPosition - offset);
-          if (dist < minDist) {
-            minDist = dist;
-            nearest = i;
-          }
-        });
-
-        // Only update if page actually changed
-        if (
-          nearest !== currentPage &&
-          nearest < sections.length &&
-          nearest >= 0
-        ) {
-          if (scrollTimeoutRef.current) {
-            clearTimeout(scrollTimeoutRef.current);
-          }
-          scrollTimeoutRef.current = setTimeout(() => {
-            setCurrentPage(nearest);
-          }, 100);
-        }
+      if (nearest !== currentPageRef.current) {
+        currentPageRef.current = nearest;
+        setCurrentPage(nearest);
       }
     };
 
-    const container = containerRef.current;
-    if (container) {
-      // Use passive listener for better scroll performance
-      container.addEventListener("scroll", handleScroll, { passive: true });
-    }
+    const handleScroll = () => {
+      if (scrollFrameRef.current === null) {
+        scrollFrameRef.current = window.requestAnimationFrame(updateCurrentPage);
+      }
+    };
+
+    const resizeObserver =
+      typeof ResizeObserver !== "undefined"
+        ? new ResizeObserver(updateOffsets)
+        : null;
+    sectionElements.forEach((section) => resizeObserver?.observe(section));
+    window.addEventListener("resize", updateOffsets, { passive: true });
+    container.addEventListener("scroll", handleScroll, { passive: true });
 
     return () => {
-      if (container) {
-        container.removeEventListener("scroll", handleScroll);
+      container.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("resize", updateOffsets);
+      resizeObserver?.disconnect();
+      if (scrollFrameRef.current !== null) {
+        window.cancelAnimationFrame(scrollFrameRef.current);
+        scrollFrameRef.current = null;
       }
-      if (scrollTimeoutRef.current) {
-        clearTimeout(scrollTimeoutRef.current);
-      }
+      if (scrollTimeoutRef.current) clearTimeout(scrollTimeoutRef.current);
     };
-  }, [currentPage, sections.length]);
+  }, [isInvitationOpen, sections.length]);
 
   // Handle arrow keys
   useEffect(() => {
@@ -147,6 +150,7 @@ function App() {
       if (!container || !target) return;
 
       isProgrammaticScrollingRef.current = true;
+      currentPageRef.current = nextPage;
       setCurrentPage(nextPage);
       container.scrollTo({ top: target.offsetTop, behavior: "smooth" });
 
@@ -167,34 +171,33 @@ function App() {
       if (programmaticScrollTimeoutRef.current) {
         clearTimeout(programmaticScrollTimeoutRef.current);
       }
+      if (scrollFrameRef.current !== null) {
+        window.cancelAnimationFrame(scrollFrameRef.current);
+      }
     };
   }, []);
 
   return (
     <div className="relative h-[100dvh] w-full overflow-hidden app-shell">
       {!isInvitationOpen && (
-        <div className="invitation-overlay fixed inset-0 z-[100] flex items-center justify-center bg-[#fdfaf6] px-4 py-[max(1rem,env(safe-area-inset-top))] transition-opacity duration-1000">
-          {/* Lớp nền mờ ảo phía sau */}
-          <div className="absolute inset-0 bg-gradient-to-br from-[#800020] via-[#5f0018] to-[#2f000c]" />
+        <div className="invitation-overlay fixed inset-0 z-[100] flex items-center justify-center px-4 py-[max(1rem,env(safe-area-inset-top))] transition-opacity duration-700">
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_20%,#6f2943_0%,#3b1827_42%,#21131a_100%)]" />
 
-          <div className="relative w-full max-w-[430px] overflow-hidden rounded-[2rem] border border-[#d4af37]/40 bg-[#6d001b] p-6 text-center text-white shadow-[0_30px_90px_rgba(0,0,0,0.45)] sm:rounded-[2.5rem] sm:p-8 md:p-12">
-            <div className="absolute -left-10 -top-16 font-script text-[13rem] leading-none text-white/[0.035]">D</div>
-            <div className="absolute -bottom-20 -right-5 font-script text-[13rem] leading-none text-white/[0.035]">C</div>
-            <div className="absolute inset-3 rounded-[1.8rem] border border-[#d4af37]/20" />
-
-            <div className="relative mx-auto my-5 flex h-20 w-20 items-center justify-center rounded-full border border-[#d4af37]/60 sm:my-8 sm:h-24 sm:w-24">
-              <WeddingMonogram className="text-5xl text-[#f7e5a8]" />
+          <div className="invitation-card relative w-full max-w-[410px] overflow-hidden rounded-[2rem] border border-[#d8b777]/45 bg-[#f8f4ef] p-7 text-center text-[#741d35] shadow-[0_30px_90px_rgba(0,0,0,0.4)] sm:rounded-[2.5rem] sm:p-10">
+            <p className="relative text-[9px] uppercase tracking-[0.48em] text-[#a37d49]">Thiệp cưới</p>
+            <div className="relative mx-auto my-5 flex h-28 w-28 items-center justify-center rounded-full border border-[#b89258]/60 bg-[#741d35] text-[#f7e5a8] shadow-[0_14px_30px_rgba(116,29,53,0.2)] sm:my-7 sm:h-32 sm:w-32">
+              <WeddingMonogram className="text-[7.5rem] sm:text-[8.5rem]" />
             </div>
-            <h1 className="relative font-script text-4xl leading-tight text-[#fff8e6] sm:text-5xl md:text-6xl">{COUPLE.groomName}</h1>
-            <p className="relative my-1 font-script text-2xl text-[#d4af37]">and</p>
-            <h1 className="relative font-script text-4xl leading-tight text-[#fff8e6] sm:text-5xl md:text-6xl">{COUPLE.brideName}</h1>
-            <div className="relative mx-auto my-5 h-px w-24 bg-[#d4af37]/50 sm:my-8" />
+            <h1 className="relative font-script text-5xl leading-none text-[#741d35] sm:text-6xl">{COUPLE.groomName}</h1>
+            <p className="relative my-1 font-script text-2xl text-[#b89258]">&</p>
+            <h1 className="relative font-script text-5xl leading-none text-[#741d35] sm:text-6xl">{COUPLE.brideName}</h1>
+            <div className="relative mx-auto my-6 h-px w-16 bg-[#b89258]/60 sm:my-8" />
             <button
               type="button"
-              className="group relative mt-6 min-h-12 overflow-hidden rounded-full bg-[#f7e5a8] px-9 py-3 text-[10px] font-bold uppercase tracking-[0.3em] text-[#800020] transition hover:-translate-y-0.5 hover:bg-white sm:mt-8"
+              className="group relative min-h-12 overflow-hidden rounded-full bg-[#741d35] px-9 py-3 text-[10px] font-semibold uppercase tracking-[0.3em] text-[#fffaf3] shadow-[0_10px_22px_rgba(116,29,53,0.2)] transition hover:-translate-y-0.5 hover:bg-[#5a1629]"
               onClick={() => setIsInvitationOpen(true)}
             >
-              <span className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/70 to-transparent transition-transform duration-700 group-hover:translate-x-full" />
+              <span className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/20 to-transparent transition-transform duration-700 group-hover:translate-x-full" />
               <span className="relative">Mở thiệp</span>
             </button>
           </div>
@@ -207,7 +210,6 @@ function App() {
             audioUrl="https://res.cloudinary.com/dvglujyon/video/upload/v1776915359/leduong_pys4qs.mp3"
             shouldAutoPlay={isInvitationOpen}
           />
-          {currentPage === 0 && <PetalFall />}
         </>
       )}
 
