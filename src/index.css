@@ -376,19 +376,6 @@ body {
   }
 }
 
-.section-fade {
-  transition:
-    opacity 600ms ease,
-    transform 600ms ease;
-  opacity: 0.78;
-  transform: scale(0.985);
-}
-
-.section-fade.is-active {
-  opacity: 1;
-  transform: scale(1);
-}
-
 @keyframes float {
   0% { transform: translateY(-10%) rotate(0deg); opacity: 0; }
   10% { opacity: 1; }

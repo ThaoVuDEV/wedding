@@ -13,21 +13,21 @@ const pendingDetails = [
 
 const ceremonyEvents = [
   {
-    side: "Nhà gái",
-    title: "Lễ Ăn Hỏi",
-    host: "Gia đình cô dâu · Ngọc Chinh",
-    date: "Đang cập nhật",
-    time: "Đang cập nhật",
-    venue: "Tư gia nhà cô dâu",
-    address: "Địa chỉ đang cập nhật",
-  },
-  {
     side: "Nhà trai",
     title: "Lễ Thành Hôn",
     host: "Gia đình chú rể · Bùi Diễn",
     date: "XX/11/2026",
     time: "Đang cập nhật",
     venue: "Tư gia nhà chú rể",
+    address: "Địa chỉ đang cập nhật",
+  },
+  {
+    side: "Nhà gái",
+    title: "Lễ Ăn Hỏi",
+    host: "Gia đình cô dâu · Ngọc Chinh",
+    date: "Đang cập nhật",
+    time: "Đang cập nhật",
+    venue: "Tư gia nhà cô dâu",
     address: "Địa chỉ đang cập nhật",
   },
 ];

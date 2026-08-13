@@ -15,6 +15,7 @@ interface Wish {
   id: string;
   name: string;
   message: string;
+  createdAt: Date | null;
 }
 
 const suggestedWishes = [
@@ -23,6 +24,21 @@ const suggestedWishes = [
   "Chúc mừng hạnh phúc! Sớm có thêm thật nhiều tin vui nhé!",
   "Mong hành trình mới của hai bạn luôn rực rỡ và dịu dàng.",
 ];
+
+const WISHES_PER_PAGE = 3;
+
+const wishDateFormatter = new Intl.DateTimeFormat("vi-VN", {
+  day: "2-digit",
+  month: "2-digit",
+  year: "numeric",
+});
+const wishTimeFormatter = new Intl.DateTimeFormat("vi-VN", {
+  hour: "2-digit",
+  minute: "2-digit",
+});
+
+const formatWishDate = (date: Date) =>
+  `${wishDateFormatter.format(date).replace(/\//g, ".")} · ${wishTimeFormatter.format(date)}`;
 
 export const WeddingWishes = () => {
   const rootRef = useRef<HTMLElement | null>(null);
@@ -34,6 +50,16 @@ export const WeddingWishes = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const [currentWishPage, setCurrentWishPage] = useState(1);
+
+  const totalWishPages = Math.max(
+    1,
+    Math.ceil(wishes.length / WISHES_PER_PAGE),
+  );
+  const visibleWishes = wishes.slice(
+    (currentWishPage - 1) * WISHES_PER_PAGE,
+    currentWishPage * WISHES_PER_PAGE,
+  );
 
   useEffect(() => {
     const el = rootRef.current;
@@ -48,6 +74,10 @@ export const WeddingWishes = () => {
   }, []);
 
   useEffect(() => {
+    setCurrentWishPage((page) => Math.min(page, totalWishPages));
+  }, [totalWishPages]);
+
+  useEffect(() => {
     const wishesQuery = query(
       collection(db, "wishes"),
       orderBy("createdAt", "desc"),
@@ -58,11 +88,17 @@ export const WeddingWishes = () => {
       wishesQuery,
       (snapshot) => {
         setWishes(
-          snapshot.docs.map((document) => ({
-            id: document.id,
-            name: String(document.data().name ?? "Khách mời"),
-            message: String(document.data().message ?? ""),
-          })),
+          snapshot.docs.map((document) => {
+            const data = document.data();
+            const createdAt = data.createdAt?.toDate?.();
+
+            return {
+              id: document.id,
+              name: String(data.name ?? "Khách mời"),
+              message: String(data.message ?? ""),
+              createdAt: createdAt instanceof Date ? createdAt : null,
+            };
+          }),
         );
         setErrorMessage("");
         setIsLoading(false);
@@ -93,6 +129,7 @@ export const WeddingWishes = () => {
       });
       setName("");
       setMessage("");
+      setCurrentWishPage(1);
       setIsSent(true);
     } catch {
       setErrorMessage(
@@ -242,7 +279,7 @@ export const WeddingWishes = () => {
               </span>
             </div>
 
-            <div className="max-h-[560px] space-y-4 overflow-y-auto pr-2">
+            <div className="space-y-4">
               {isLoading ? (
                 <div className="rounded-[2rem] border border-white bg-white/45 p-12 text-center">
                   <span className="mb-4 block animate-pulse text-4xl text-[#d4af37]">♡</span>
@@ -261,7 +298,7 @@ export const WeddingWishes = () => {
                   </p>
                 </div>
               ) : (
-                wishes.map((wish, index) => (
+                visibleWishes.map((wish, index) => (
                   <article
                     key={wish.id}
                     className="relative overflow-hidden rounded-[1.6rem] border border-white bg-white/70 p-6 shadow-sm"
@@ -270,10 +307,20 @@ export const WeddingWishes = () => {
                     <p className="relative text-sm font-light italic leading-relaxed text-gray-600">
                       “{wish.message}”
                     </p>
-                    <div className="mt-4 flex items-center gap-3">
-                      <span className="h-px w-8 bg-[#d4af37]" />
-                      <p className="font-script text-lg text-[#800020]">{wish.name}</p>
-                      {index === 0 && (
+                    <time
+                      dateTime={wish.createdAt?.toISOString()}
+                      className="mt-1.5 block text-right text-[9px] font-normal not-italic tracking-wide text-gray-400/80"
+                    >
+                      {wish.createdAt
+                        ? formatWishDate(wish.createdAt)
+                        : "Vừa gửi"}
+                    </time>
+                    <div className="mt-5 flex flex-wrap items-center gap-x-3 gap-y-2">
+                      <span className="h-px w-8 shrink-0 bg-[#d4af37]" />
+                      <p className="font-script text-lg leading-tight text-[#800020]">
+                        {wish.name}
+                      </p>
+                      {currentWishPage === 1 && index === 0 && (
                         <span className="rounded-full bg-[#d4af37]/10 px-2 py-0.5 text-[9px] uppercase tracking-wider text-[#9b791c]">
                           Mới nhất
                         </span>
@@ -283,6 +330,59 @@ export const WeddingWishes = () => {
                 ))
               )}
             </div>
+
+            {!isLoading && totalWishPages > 1 && (
+              <nav
+                className="mt-6 flex items-center justify-center gap-2"
+                aria-label="Phân trang lời chúc"
+              >
+                <button
+                  type="button"
+                  aria-label="Trang lời chúc trước"
+                  disabled={currentWishPage === 1}
+                  onClick={() =>
+                    setCurrentWishPage((page) => Math.max(1, page - 1))
+                  }
+                  className="flex h-10 w-10 items-center justify-center rounded-full border border-[#800020]/10 bg-white/70 text-[#800020] transition hover:border-[#d4af37] disabled:cursor-not-allowed disabled:opacity-30"
+                >
+                  ‹
+                </button>
+
+                {Array.from({ length: totalWishPages }, (_, index) => {
+                  const page = index + 1;
+                  return (
+                    <button
+                      key={page}
+                      type="button"
+                      aria-label={`Trang lời chúc ${page}`}
+                      aria-current={currentWishPage === page ? "page" : undefined}
+                      onClick={() => setCurrentWishPage(page)}
+                      className={`flex h-10 min-w-10 items-center justify-center rounded-full px-3 text-xs font-medium transition ${
+                        currentWishPage === page
+                          ? "bg-[#800020] text-white shadow-md"
+                          : "border border-[#800020]/10 bg-white/70 text-[#800020] hover:border-[#d4af37]"
+                      }`}
+                    >
+                      {page}
+                    </button>
+                  );
+                })}
+
+                <button
+                  type="button"
+                  aria-label="Trang lời chúc sau"
+                  disabled={currentWishPage === totalWishPages}
+                  onClick={() =>
+                    setCurrentWishPage((page) =>
+                      Math.min(totalWishPages, page + 1),
+                    )
+                  }
+                  className="flex h-10 w-10 items-center justify-center rounded-full border border-[#800020]/10 bg-white/70 text-[#800020] transition hover:border-[#d4af37] disabled:cursor-not-allowed disabled:opacity-30"
+                >
+                  ›
+                </button>
+              </nav>
+            )}
           </div>
         </div>
       </div>

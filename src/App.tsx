@@ -9,6 +9,11 @@ import { Confetti } from "./components/Confetti";
 import { PetalFall } from "./components/PetalFall";
 import { WeddingMonogram } from "./components/WeddingMonogram";
 import { WeddingGallery } from "./components/WeddingGallery";
+import weddingPhoto1 from "./assets/wedding/1.webp";
+import weddingPhoto2 from "./assets/wedding/2.webp";
+import weddingPhoto3 from "./assets/wedding/3.webp";
+import weddingPhoto4 from "./assets/wedding/4.webp";
+import weddingPhoto5 from "./assets/wedding/5.webp";
 import "./index.css";
 
 const COUPLE = {
@@ -18,11 +23,12 @@ const COUPLE = {
 
 function App() {
   const [currentPage, setCurrentPage] = useState(0);
-  const [isScrolling, setIsScrolling] = useState(false);
   const [isInvitationOpen, setIsInvitationOpen] = useState(false);
 
   const containerRef = useRef<HTMLDivElement>(null);
   const scrollTimeoutRef = useRef<ReturnType<typeof setTimeout>>();
+  const programmaticScrollTimeoutRef = useRef<ReturnType<typeof setTimeout>>();
+  const isProgrammaticScrollingRef = useRef(false);
 
   const sections = [
     <Welcome
@@ -38,7 +44,16 @@ function App() {
       story="Chúng mình không mong một câu chuyện hoàn hảo, chỉ mong mỗi ngày đều có thể cùng nhau ăn một bữa cơm, kể vài chuyện nhỏ và bình yên đi qua những tháng năm dài. Tháng Mười Một này, chúng mình muốn chia sẻ niềm vui ấy với những người thân thương nhất."
       quote="Bùi Diễn & Ngọc Chinh"
     />,
-    <WeddingGallery key="gallery" coverImage="" images={[]} />,
+    <WeddingGallery
+      key="gallery"
+      coverImage={weddingPhoto1}
+      images={[
+        { src: weddingPhoto2, alt: "Khoảnh khắc cưới 1" },
+        { src: weddingPhoto3, alt: "Khoảnh khắc cưới 2" },
+        { src: weddingPhoto4, alt: "Khoảnh khắc cưới 3" },
+        { src: weddingPhoto5, alt: "Khoảnh khắc cưới 4" },
+      ]}
+    />,
     <WeddingSchedule
       key="schedule"
       groomName={COUPLE.groomName}
@@ -52,31 +67,10 @@ function App() {
     />,
   ];
 
-  // Handle scroll to section
-  useEffect(() => {
-    if (containerRef.current) {
-      setIsScrolling(true);
-      const container = containerRef.current;
-      const children = Array.from(
-        container.querySelectorAll<HTMLElement>(".section"),
-      );
-      const target = children[currentPage]?.offsetTop ?? 0;
-      container.scrollTo({ top: target, behavior: "smooth" });
-
-      // Allow scroll detection after animation completes
-      const timer = setTimeout(() => {
-        setIsScrolling(false);
-      }, 800);
-
-      return () => clearTimeout(timer);
-    }
-  }, [currentPage]);
-
-  // Handle native scroll with better throttle
+  // Track the visible section without starting another smooth scroll.
   useEffect(() => {
     const handleScroll = () => {
-      // Ignore scroll events triggered by programmatic scrollTo
-      if (isScrolling) return;
+      if (isProgrammaticScrollingRef.current) return;
 
       if (containerRef.current) {
         const container = containerRef.current;
@@ -108,7 +102,7 @@ function App() {
           }
           scrollTimeoutRef.current = setTimeout(() => {
             setCurrentPage(nearest);
-          }, 150);
+          }, 100);
         }
       }
     };
@@ -127,22 +121,53 @@ function App() {
         clearTimeout(scrollTimeoutRef.current);
       }
     };
-  }, [currentPage, sections.length, isScrolling]);
+  }, [currentPage, sections.length]);
 
   // Handle arrow keys
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (!isInvitationOpen) return;
+
+      let nextPage = currentPage;
       if (e.key === "ArrowDown" && currentPage < sections.length - 1) {
-        setCurrentPage(currentPage + 1);
+        nextPage = currentPage + 1;
       } else if (e.key === "ArrowUp" && currentPage > 0) {
-        setCurrentPage(currentPage - 1);
+        nextPage = currentPage - 1;
+      } else {
+        return;
       }
+
+      e.preventDefault();
+      const container = containerRef.current;
+      const target = container?.querySelectorAll<HTMLElement>(".section")[
+        nextPage
+      ];
+
+      if (!container || !target) return;
+
+      isProgrammaticScrollingRef.current = true;
+      setCurrentPage(nextPage);
+      container.scrollTo({ top: target.offsetTop, behavior: "smooth" });
+
+      if (programmaticScrollTimeoutRef.current) {
+        clearTimeout(programmaticScrollTimeoutRef.current);
+      }
+      programmaticScrollTimeoutRef.current = setTimeout(() => {
+        isProgrammaticScrollingRef.current = false;
+      }, 700);
     };
 
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [currentPage, sections.length, isInvitationOpen]);
+
+  useEffect(() => {
+    return () => {
+      if (programmaticScrollTimeoutRef.current) {
+        clearTimeout(programmaticScrollTimeoutRef.current);
+      }
+    };
+  }, []);
 
   return (
     <div className="relative h-[100dvh] w-full overflow-hidden app-shell">
@@ -210,9 +235,7 @@ function App() {
           {sections.map((section, idx) => (
             <div
               key={idx}
-              className={`section w-full flex-shrink-0 section-fade ${
-                currentPage === idx ? "is-active" : ""
-              }`}
+              className="section w-full flex-shrink-0"
             >
               {section}
             </div>

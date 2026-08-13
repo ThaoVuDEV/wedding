@@ -19,7 +19,6 @@ export const Welcome = ({ groomName, brideName }: WelcomeProps) => {
 
   return (
     <section className="relative flex min-h-[100svh] w-full items-center overflow-hidden bg-[#f7f0e8] px-5 py-10 sm:px-6 sm:py-16">
-      <div className="absolute left-0 top-0 h-full w-[14px] bg-[#800020] md:w-[22px]" />
       <div className="absolute right-8 top-8 hidden text-[10px] uppercase tracking-[0.5em] text-[#800020]/40 [writing-mode:vertical-rl] sm:block">
         November · Twenty Twenty Six
       </div>

@@ -113,9 +113,6 @@ export const WeddingGallery = ({ coverImage, images = [] }: WeddingGalleryProps)
           })}
         </div>
 
-        <p className="mt-8 text-center text-[10px] uppercase tracking-[0.35em] text-[#800020]/35">
-          Ảnh bìa + 4 ảnh album đang chờ cập nhật
-        </p>
       </div>
 
       {activePhoto &&
