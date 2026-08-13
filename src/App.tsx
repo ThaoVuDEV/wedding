@@ -37,6 +37,13 @@ function App() {
       brideName={COUPLE.brideName}
       groomAlias="Chú rể"
       brideAlias="Cô dâu"
+      weddingDate="XX · 11 · 2026"
+      weddingTime="XX:XX"
+    />,
+    <WeddingSchedule
+      key="schedule"
+      groomName={COUPLE.groomName}
+      brideName={COUPLE.brideName}
     />,
     <OurStory
       key="story"
@@ -53,11 +60,6 @@ function App() {
         { src: weddingPhoto4, alt: "Khoảnh khắc cưới 3" },
         { src: weddingPhoto5, alt: "Khoảnh khắc cưới 4" },
       ]}
-    />,
-    <WeddingSchedule
-      key="schedule"
-      groomName={COUPLE.groomName}
-      brideName={COUPLE.brideName}
     />,
     <WeddingWishes key="wishes" />,
     <ThankYou
@@ -181,7 +183,6 @@ function App() {
             <div className="absolute -bottom-20 -right-5 font-script text-[13rem] leading-none text-white/[0.035]">C</div>
             <div className="absolute inset-3 rounded-[1.8rem] border border-[#d4af37]/20" />
 
-            <p className="relative text-[9px] uppercase tracking-[0.55em] text-[#e4ca77]">Private invitation</p>
             <div className="relative mx-auto my-5 flex h-20 w-20 items-center justify-center rounded-full border border-[#d4af37]/60 sm:my-8 sm:h-24 sm:w-24">
               <WeddingMonogram className="text-5xl text-[#f7e5a8]" />
             </div>
@@ -189,15 +190,13 @@ function App() {
             <p className="relative my-1 font-script text-2xl text-[#d4af37]">and</p>
             <h1 className="relative font-script text-4xl leading-tight text-[#fff8e6] sm:text-5xl md:text-6xl">{COUPLE.brideName}</h1>
             <div className="relative mx-auto my-5 h-px w-24 bg-[#d4af37]/50 sm:my-8" />
-            <p className="relative text-xs uppercase tracking-[0.3em] text-white/65">XX · 11 · 2026</p>
-            <p className="relative mt-3 text-xs font-light text-white/45">Trân trọng mời bạn đến chung vui</p>
             <button
               type="button"
               className="group relative mt-6 min-h-12 overflow-hidden rounded-full bg-[#f7e5a8] px-9 py-3 text-[10px] font-bold uppercase tracking-[0.3em] text-[#800020] transition hover:-translate-y-0.5 hover:bg-white sm:mt-8"
               onClick={() => setIsInvitationOpen(true)}
             >
               <span className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/70 to-transparent transition-transform duration-700 group-hover:translate-x-full" />
-              <span className="relative">Mở lời mời</span>
+              <span className="relative">Mở thiệp</span>
             </button>
           </div>
         </div>
