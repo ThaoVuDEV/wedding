@@ -1,8 +1,11 @@
 export const WEDDING = {
   groomName: "Bùi Diễn",
   brideName: "Ngọc Chinh",
+  groomPhone: "0961 164 089",
+  bridePhone: "0337039065",
   dateDisplay: "29 · 11 · 2026",
   dateSlash: "29/11/2026",
+  lunarDateDisplay: "21 · 10 · 2026",
   timeDisplay: "7:00",
   ceremonyEvents: [
     {

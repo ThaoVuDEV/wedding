@@ -7,11 +7,14 @@ import { ThankYou } from "./components/ThankYou";
 import { MusicToggle } from "./components/MusicToggle";
 import { WeddingMonogram } from "./components/WeddingMonogram";
 import { WeddingGallery } from "./components/WeddingGallery";
+import { WeddingDateInfo } from "./components/WeddingDateInfo";
+import { WeddingCountdown } from "./components/WeddingCountdown";
 import weddingPhoto1 from "./assets/wedding/1.webp";
 import weddingPhoto2 from "./assets/wedding/2.webp";
 import weddingPhoto3 from "./assets/wedding/3.webp";
 import weddingPhoto4 from "./assets/wedding/4.webp";
 import weddingPhoto5 from "./assets/wedding/5.webp";
+import storyPhoto from "../images/6.png";
 import { WEDDING } from "./config/wedding";
 import "./index.css";
 
@@ -40,16 +43,22 @@ function App() {
       brideAlias="Cô dâu"
       weddingDate={WEDDING.dateDisplay}
     />,
-    <WeddingSchedule
-      key="schedule"
-      groomName={COUPLE.groomName}
-      brideName={COUPLE.brideName}
-    />,
     <OurStory
       key="story"
       title="Lời Ngỏ"
-      story="Chúng mình gặp nhau giữa những điều giản dị, rồi chọn cùng nhau đi qua những ngày bình thường. Cảm ơn bạn đã ở đây để chứng kiến chương mới của chúng mình."
+      image={storyPhoto}
+      story="Giữa những ngày bình thường, chúng mình gặp nhau, rồi nhận ra hạnh phúc đôi khi bắt đầu từ một người khiến ta muốn sẻ chia mọi điều. Từ hôm nay, chúng mình chọn cùng nhau đi qua những niềm vui, những thử thách và những ngày bình dị phía trước."
       quote="Bùi Diễn & Ngọc Chinh"
+      highlights={[
+        {
+          title: "Tình yêu...",
+          text: "Là khi hai trái tim tìm thấy nhau giữa cuộc đời rộng lớn, cùng lắng nghe, cùng sẻ chia và cùng lớn lên mỗi ngày.",
+        },
+        {
+          title: "Chúng mình tin rằng...",
+          text: "Hạnh phúc không nằm ở những điều quá lớn lao, mà ở việc luôn có một người để trở về và nắm tay nhau đi tiếp.",
+        },
+      ]}
     />,
     <WeddingGallery
       key="gallery"
@@ -61,7 +70,18 @@ function App() {
         { src: weddingPhoto5, alt: "Khoảnh khắc cưới 4" },
       ]}
     />,
+    <WeddingSchedule
+      key="schedule"
+      groomName={COUPLE.groomName}
+      brideName={COUPLE.brideName}
+    />,
+    <WeddingCountdown key="countdown" />,
     <WeddingWishes key="wishes" />,
+    <WeddingDateInfo
+      key="date-info"
+      groomName={COUPLE.groomName}
+      brideName={COUPLE.brideName}
+    />,
     <ThankYou
       key="thankyou"
       weddingDate={WEDDING.dateSlash}
@@ -180,7 +200,11 @@ function App() {
     <div className="relative h-[100dvh] w-full overflow-hidden app-shell">
       {!isInvitationOpen && (
         <div className="invitation-overlay fixed inset-0 z-[100] flex items-center justify-center px-4 py-[max(1rem,env(safe-area-inset-top))] transition-opacity duration-700">
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_20%,#6f2943_0%,#3b1827_42%,#21131a_100%)]" />
+          <div
+            className="absolute inset-0 scale-105 bg-cover bg-center blur-[2px]"
+            style={{ backgroundImage: `url(${weddingPhoto1})` }}
+          />
+          <div className="absolute inset-0 bg-[#17070c]/65" />
 
           <div className="invitation-card relative w-full max-w-[410px] overflow-hidden rounded-[2rem] border border-[#d8b777]/45 bg-[#fffdfb] p-7 text-center text-[#741d35] shadow-[0_30px_90px_rgba(0,0,0,0.4)] sm:rounded-[2.5rem] sm:p-10">
             <p className="relative text-[9px] uppercase tracking-[0.48em] text-[#a37d49]">Thiệp cưới</p>
@@ -191,6 +215,12 @@ function App() {
             <p className="relative my-1 font-script text-2xl text-[#b89258]">&</p>
             <h1 className="relative font-script text-5xl leading-none text-[#741d35] sm:text-6xl">{COUPLE.brideName}</h1>
             <div className="relative mx-auto my-6 h-px w-16 bg-[#b89258]/60 sm:my-8" />
+            <p className="relative font-serif text-lg font-semibold tracking-[0.16em] text-[#741d35] sm:text-xl">
+              {WEDDING.dateDisplay}
+            </p>
+            <p className="relative mt-3 text-[9px] uppercase tracking-[0.45em] text-[#a37d49]">
+              Thân mời
+            </p>
             <button
               type="button"
               className="group relative min-h-12 overflow-hidden rounded-full bg-[#741d35] px-9 py-3 text-[10px] font-semibold uppercase tracking-[0.3em] text-[#fffaf3] shadow-[0_10px_22px_rgba(116,29,53,0.2)] transition hover:-translate-y-0.5 hover:bg-[#5a1629]"

@@ -112,70 +112,82 @@ export const WeddingSchedule = ({
               </div>
 
               <div className="grid gap-4 md:grid-cols-2 md:gap-5">
-                {WEDDING.ceremonyEvents.map((event, index) => (
-                  <article
-                    key={event.title}
-                    className={`relative rounded-[1.35rem] border border-[#741d35]/12 bg-[#fcf8f3] p-5 transition-all duration-700 sm:p-6 ${
-                      isVisible
-                        ? "translate-y-0 opacity-100"
-                        : "translate-y-5 opacity-0"
-                    }`}
-                    style={{ transitionDelay: `${250 + index * 150}ms` }}
-                  >
-                    <span className="absolute right-5 top-5 font-serif text-3xl text-[#b89258]/35">
-                      0{index + 1}
-                    </span>
-                    <p className="font-sans text-[10px] font-semibold uppercase tracking-[0.25em] text-[#8d6a43]">
-                      {event.side}
-                    </p>
-                    <h3 className="mt-2 font-serif text-3xl font-semibold italic text-[#741d35] sm:text-4xl">
-                      {event.title}
-                    </h3>
+                {WEDDING.ceremonyEvents.map((event, index) => {
+                  const isGroom = event.side === "Nhà trai";
+                  const accentColor = isGroom ? "text-[#741d35]" : "text-[#a37d49]";
+                  const titleColor = isGroom ? "text-[#741d35]" : "text-[#965064]";
+                  const cardStyle = isGroom
+                    ? "border-[#741d35]/20 bg-[#fff7f7]"
+                    : "border-[#b89258]/40 bg-[#fffaf0]";
 
-                    <div className="my-5 h-px bg-[#741d35]/10" />
-
-                    <dl className="space-y-4">
-                      <div className="flex items-start gap-3">
-                        <DetailIcon type="time" />
-                        <div>
-                          <dt className="font-sans text-[10px] font-semibold uppercase tracking-[0.2em] text-[#8d6a43]">
-                            Thời gian
-                          </dt>
-                          <dd className="mt-1 font-sans text-base font-bold text-[#741d35] sm:text-lg">
-                            {event.date}
-                          </dd>
-                          <dd className="mt-0.5 font-sans text-sm font-semibold text-[#741d35] sm:text-base">
-                            {event.time}
-                          </dd>
-                        </div>
-                      </div>
-                      <div className="flex items-start gap-3">
-                        <DetailIcon type="place" />
-                        <div>
-                          <dt className="font-sans text-[10px] font-semibold uppercase tracking-[0.2em] text-[#8d6a43]">
-                            Địa điểm
-                          </dt>
-                          <dd className="mt-1 font-sans text-sm font-medium text-[#4f4043]">
-                            {event.venue}
-                          </dd>
-                          <dd className="mt-0.5 font-sans text-xs text-[#756568]">
-                            {event.address}
-                          </dd>
-                        </div>
-                      </div>
-                    </dl>
-
-                    <a
-                      href={event.mapUrl}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="mt-5 inline-flex min-h-10 items-center gap-2 rounded-full border border-[#741d35]/20 px-4 py-2 font-sans text-[10px] font-semibold uppercase tracking-[0.16em] text-[#741d35] transition hover:border-[#b89258] hover:bg-[#b89258]/10"
+                  return (
+                    <article
+                      key={event.title}
+                      className={`relative rounded-[1.35rem] border p-5 transition-all duration-700 sm:p-6 ${cardStyle} ${
+                        isVisible
+                          ? "translate-y-0 opacity-100"
+                          : "translate-y-5 opacity-0"
+                      }`}
+                      style={{ transitionDelay: `${250 + index * 150}ms` }}
                     >
-                      <span aria-hidden="true">⌖</span>
-                      Chỉ đường
-                    </a>
-                  </article>
-                ))}
+                      <span className={`absolute right-5 top-5 font-serif text-3xl ${isGroom ? "text-[#741d35]/25" : "text-[#b89258]/45"}`}>
+                        0{index + 1}
+                      </span>
+                      <p className={`font-sans text-[10px] font-semibold uppercase tracking-[0.25em] ${accentColor}`}>
+                        {event.side}
+                      </p>
+                      <h3 className={`mt-2 font-serif text-3xl font-semibold italic sm:text-4xl ${titleColor}`}>
+                        {event.title}
+                      </h3>
+
+                      <div className={`my-5 h-px ${isGroom ? "bg-[#741d35]/10" : "bg-[#b89258]/20"}`} />
+
+                      <dl className="space-y-4">
+                        <div className="flex items-start gap-3">
+                          <DetailIcon type="time" />
+                          <div>
+                            <dt className={`font-sans text-[10px] font-semibold uppercase tracking-[0.2em] ${accentColor}`}>
+                              Thời gian
+                            </dt>
+                            <dd className={`mt-1 font-sans text-base font-bold sm:text-lg ${titleColor}`}>
+                              {event.date}
+                            </dd>
+                            <dd className="mt-1 font-sans text-xs font-medium text-[#756568]">
+                              Âm lịch: {WEDDING.lunarDateDisplay}
+                            </dd>
+                            <dd className={`mt-0.5 font-sans text-sm font-semibold sm:text-base ${titleColor}`}>
+                              {event.time}
+                            </dd>
+                          </div>
+                        </div>
+                        <div className="flex items-start gap-3">
+                          <DetailIcon type="place" />
+                          <div>
+                            <dt className={`font-sans text-[10px] font-semibold uppercase tracking-[0.2em] ${accentColor}`}>
+                              Địa điểm
+                            </dt>
+                            <dd className="mt-1 font-sans text-sm font-medium text-[#4f4043]">
+                              {event.venue}
+                            </dd>
+                            <dd className="mt-0.5 font-sans text-xs text-[#756568]">
+                              {event.address}
+                            </dd>
+                          </div>
+                        </div>
+                      </dl>
+
+                      <a
+                        href={event.mapUrl}
+                        target="_blank"
+                        rel="noreferrer"
+                        className={`mt-5 inline-flex min-h-10 items-center gap-2 rounded-full border px-4 py-2 font-sans text-[10px] font-semibold uppercase tracking-[0.16em] transition hover:bg-[#b89258]/10 ${isGroom ? "border-[#741d35]/20 text-[#741d35] hover:border-[#741d35]/40" : "border-[#b89258]/40 text-[#965064] hover:border-[#b89258]"}`}
+                      >
+                        <span aria-hidden="true">⌖</span>
+                        Chỉ đường
+                      </a>
+                    </article>
+                  );
+                })}
               </div>
 
               <p className="mt-7 text-center font-script text-xl text-[#741d35]/65 sm:text-2xl">

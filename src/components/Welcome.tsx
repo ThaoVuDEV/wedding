@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { WeddingMonogram } from "./WeddingMonogram";
+import weddingPhoto2 from "../assets/wedding/2.webp";
 
 interface WelcomeProps {
   groomName: string;
@@ -10,7 +11,13 @@ interface WelcomeProps {
   weddingDate: string;
 }
 
-export const Welcome = ({ groomName, brideName, weddingDate }: WelcomeProps) => {
+export const Welcome = ({
+  groomName,
+  brideName,
+  groomAlias = "Chú rể",
+  brideAlias = "Cô dâu",
+  weddingDate,
+}: WelcomeProps) => {
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
@@ -19,40 +26,36 @@ export const Welcome = ({ groomName, brideName, weddingDate }: WelcomeProps) => 
   }, []);
 
   return (
-    <section className="relative flex min-h-[100svh] w-full items-center overflow-hidden bg-[#f7f0e8] px-5 py-8 sm:px-6 sm:py-16">
-      <div className="relative mx-auto flex w-full max-w-2xl flex-col items-center gap-7 sm:gap-10 md:grid md:max-w-6xl md:grid-cols-[0.8fr_1.2fr]">
-        <div
-          className={`flex flex-col items-center text-center transition-all duration-1000 md:items-start md:text-left ${isVisible ? "translate-y-0 opacity-100" : "-translate-y-5 opacity-0"}`}
-        >
-          <div className="flex h-28 w-28 items-center justify-center rounded-full border border-[#d4af37]/60 p-1.5 shadow-[0_12px_35px_rgba(128,0,32,0.12)] sm:h-36 sm:w-36 md:h-48 md:w-48">
-            <div className="flex h-[82%] w-[82%] items-center justify-center rounded-full bg-[#800020] text-[#f7e5a8] shadow-2xl">
-              <WeddingMonogram className="text-6xl sm:text-7xl md:text-9xl" />
+    <section className="relative min-h-[100svh] w-full overflow-hidden bg-[#f7f0e8] px-6 py-8 sm:px-10 sm:py-12">
+      <img
+        src={weddingPhoto2}
+        alt="Khoảnh khắc cưới của Bùi Diễn và Ngọc Chinh"
+        className="absolute inset-0 h-full w-full object-cover object-center"
+        decoding="async"
+      />
+      <div className="absolute inset-0 bg-white/10" />
+      <div className="absolute inset-x-0 top-0 h-56 bg-gradient-to-b from-white/85 via-white/35 to-transparent" />
+      <div className="absolute inset-x-0 bottom-0 h-72 bg-gradient-to-t from-white/55 via-white/10 to-transparent" />
+
+      <div className="relative z-10 mx-auto flex min-h-[calc(100svh-4rem)] w-full max-w-6xl items-end">
+        <div className={`max-w-[21rem] pb-3 transition-all duration-1000 sm:max-w-xl sm:pb-5 ${isVisible ? "translate-y-0 opacity-100" : "translate-y-5 opacity-0"}`}>
+          <div className="border-t border-[#8f0026]/30 pt-4 sm:pt-5">
+            <div className="flex items-baseline gap-4">
+              <span className="w-14 font-serif text-[10px] uppercase tracking-[0.3em] text-[#5d4a4d]">{groomAlias}</span>
+              <span className="font-script text-4xl text-[#8f0026] sm:text-6xl">{groomName}</span>
             </div>
-          </div>
-        </div>
-
-        <div
-          className={`w-full border-t border-[#d4af37]/35 pt-5 text-center transition-all delay-300 duration-1000 md:border-l md:border-t-0 md:pl-14 md:pt-0 md:text-left ${isVisible ? "translate-y-0 opacity-100" : "translate-y-5 opacity-0"}`}
-        >
-          <h1 className="font-script text-[3.25rem] leading-none text-[#800020] sm:text-6xl md:text-8xl lg:text-9xl">
-            {groomName}
-          </h1>
-          <div className="my-2 flex items-center justify-center gap-3 text-[#d4af37] md:my-4 md:justify-start">
-            <span className="h-px w-12 bg-current sm:w-20" />
-            <span className="font-script text-2xl sm:text-3xl">and</span>
-            <span className="h-px w-12 bg-current sm:hidden" />
-          </div>
-          <h1 className="font-script text-[3.25rem] leading-none text-[#800020] sm:text-6xl md:text-8xl lg:text-9xl">
-            {brideName}
-          </h1>
-
-          <div className="mx-auto mt-6 flex max-w-xs items-center justify-center gap-4 border-t border-[#d4af37]/30 pt-4 font-script text-xl text-[#800020] sm:text-2xl md:mx-0 md:justify-start md:gap-6">
-            <p>{weddingDate}</p>
+            <div className="mt-2 flex items-baseline gap-4 sm:mt-3">
+              <span className="w-14 font-serif text-[10px] uppercase tracking-[0.3em] text-[#5d4a4d]">{brideAlias}</span>
+              <span className="font-script text-4xl text-[#8f0026] sm:text-6xl">{brideName}</span>
+            </div>
+            <p className="mt-3 font-serif text-base italic text-[#8f0026] sm:text-lg">{weddingDate}</p>
           </div>
         </div>
       </div>
 
-      <div className="absolute bottom-3 left-1/2 hidden h-10 w-px -translate-x-1/2 bg-[#800020]/30 sm:block" />
+      <div className="absolute left-5 top-5 z-20 flex h-12 w-12 items-center justify-center rounded-full border border-[#d4af37]/70 bg-[#800020] text-[#f7e5a8] shadow-[0_10px_25px_rgba(73,37,45,0.22)] sm:left-8 sm:top-8 sm:h-14 sm:w-14">
+        <WeddingMonogram className="text-4xl sm:text-5xl" />
+      </div>
     </section>
   );
 };

@@ -58,7 +58,7 @@ export const WeddingGallery = ({ coverImage, images = [] }: WeddingGalleryProps)
           <h2 className="mt-3 font-script text-5xl text-[#800020] min-[380px]:text-6xl sm:text-7xl">Chuyện Mình Qua Ảnh</h2>
         </header>
 
-        <div className={`relative overflow-hidden rounded-[2rem] border border-white/80 bg-white p-2 shadow-[0_24px_80px_rgba(92,35,45,0.12)] transition-all delay-200 duration-1000 sm:rounded-[2.75rem] sm:p-3 ${isVisible ? "scale-100 opacity-100" : "scale-[0.97] opacity-0"}`}>
+        <div className={`wedding-photo-frame relative overflow-hidden rounded-[2rem] p-0.5 shadow-[0_24px_80px_rgba(92,35,45,0.12)] transition-all delay-200 duration-1000 sm:rounded-[2.75rem] sm:p-1 ${isVisible ? "scale-100 opacity-100" : "scale-[0.97] opacity-0"}`}>
           <div className="relative aspect-[4/5] overflow-hidden rounded-[1.6rem] sm:aspect-[16/8] sm:rounded-[2.25rem]">
             {coverImage ? (
               <button
@@ -90,7 +90,7 @@ export const WeddingGallery = ({ coverImage, images = [] }: WeddingGalleryProps)
             return (
               <div
                 key={label}
-                className={`overflow-hidden rounded-[1.4rem] border-4 border-white bg-white shadow-lg transition-all duration-700 sm:rounded-[1.8rem] ${index % 2 === 1 ? "mt-6" : "mb-6"} ${isVisible ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"}`}
+                className={`wedding-photo-frame overflow-hidden rounded-[1.4rem] p-0.5 shadow-lg transition-all duration-700 sm:rounded-[1.8rem] ${index % 2 === 1 ? "mt-6" : "mb-6"} ${isVisible ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"}`}
                 style={{ transitionDelay: `${400 + index * 120}ms` }}
               >
                 <div className="aspect-[3/4] overflow-hidden">

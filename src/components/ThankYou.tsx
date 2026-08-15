@@ -73,14 +73,21 @@ export const ThankYou = ({
 
         <button
           type="button"
+          aria-label="Mở hộp mừng cưới và xem mã QR"
           onClick={() => {
             setSelectedRecipientId(null);
             setIsGiftModalOpen(true);
           }}
-          className="gift-cta mt-8 inline-flex min-h-12 items-center gap-2 rounded-full border border-[#f7e5a8] bg-[#d4af37] px-5 py-3 text-[9px] font-bold uppercase tracking-[0.2em] text-[#2c000b] transition hover:scale-105 hover:bg-[#f7e5a8] sm:mt-10 sm:gap-3 sm:px-8 sm:py-3.5 sm:text-[10px] sm:tracking-[0.3em]"
+          className="gift-cta mx-auto mt-8 block w-full max-w-[230px] rounded-[1.75rem] border-2 border-[#d4af37]/70 bg-[#7a1733] p-3 text-center shadow-[0_18px_45px_rgba(0,0,0,0.22)] transition hover:bg-[#8c1d3d] sm:mt-10"
         >
-          <span className="text-base" aria-hidden="true">🎁</span>
-          <span>Chung vui cùng chúng mình</span>
+          <span className="block rounded-[1.25rem] border border-[#f7e5a8]/25 px-4 py-5">
+            <span className="mx-auto flex h-14 w-14 items-center justify-center rounded-full border border-[#f7e5a8]/70 bg-[#d4af37] font-serif text-3xl font-bold text-[#7a1733]">
+              囍
+            </span>
+            <span className="mt-4 block font-script text-2xl text-[#fff8e6]">Hộp Mừng Cưới</span>
+            <span className="mt-1 block text-[9px] uppercase tracking-[0.25em] text-[#f7e5a8]/70">Chung vui cùng chúng mình</span>
+            <span className="mt-4 block text-[9px] font-semibold uppercase tracking-[0.18em] text-[#f7e5a8]">Nhấn để mở</span>
+          </span>
         </button>
 
         <div className="mt-10 flex items-center justify-center gap-3 text-white/25 sm:mt-16 sm:gap-4">

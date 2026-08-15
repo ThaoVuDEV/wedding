@@ -155,6 +155,17 @@ a {
   animation-play-state: paused;
 }
 
+.wedding-photo-frame {
+  background: linear-gradient(135deg, #d87f9b, #f0d18b, #a3264c, #e7a0b3, #d87f9b);
+  background-size: 300% 300%;
+  animation: borderFlow 7s ease-in-out infinite;
+}
+
+@keyframes borderFlow {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
 @keyframes giftPulse {
   0%, 100% {
     transform: scale(1);
