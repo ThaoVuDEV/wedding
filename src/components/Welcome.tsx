@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { WeddingMonogram } from "./WeddingMonogram";
-import weddingPhoto2 from "../assets/wedding/2.webp";
+import weddingPhoto from "../../images/10.png";
 
 interface WelcomeProps {
   groomName: string;
@@ -28,7 +28,7 @@ export const Welcome = ({
   return (
     <section className="relative min-h-[100svh] w-full overflow-hidden bg-[#f7f0e8] px-6 py-8 sm:px-10 sm:py-12">
       <img
-        src={weddingPhoto2}
+        src={weddingPhoto}
         alt="Khoảnh khắc cưới của Bùi Diễn và Ngọc Chinh"
         className="absolute inset-0 h-full w-full object-cover object-center"
         decoding="async"

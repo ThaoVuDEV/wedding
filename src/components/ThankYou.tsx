@@ -56,7 +56,7 @@ export const ThankYou = ({
   }, []);
 
   return (
-    <section ref={rootRef} className="relative flex min-h-[100svh] items-center overflow-hidden bg-[#2c000b] px-5 py-14 text-white sm:px-6 sm:py-20">
+    <section ref={rootRef} className="relative flex min-h-0 items-center overflow-hidden bg-[#2c000b] px-5 py-14 text-white md:min-h-[100svh] sm:px-6 sm:py-20">
       <div className="absolute left-1/2 top-1/2 h-[70vw] max-h-[700px] w-[70vw] max-w-[700px] -translate-x-1/2 -translate-y-1/2 rounded-full border border-[#d4af37]/10" />
       <div className="absolute left-1/2 top-1/2 h-[55vw] max-h-[550px] w-[55vw] max-w-[550px] -translate-x-1/2 -translate-y-1/2 rounded-full border border-[#d4af37]/10" />
 

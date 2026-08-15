@@ -34,7 +34,7 @@ export const WeddingDateInfo = ({
   groomName,
   brideName,
 }: WeddingDateInfoProps) => (
-  <section className="relative flex min-h-[70svh] items-center overflow-hidden bg-[#f8f1eb] px-5 py-14 sm:px-6 sm:py-20">
+  <section className="relative flex min-h-0 items-center overflow-hidden bg-[#f8f1eb] px-5 py-14 md:min-h-[70svh] sm:px-6 sm:py-20">
     <div className="absolute -left-24 top-12 h-72 w-72 rounded-full bg-[#e9cbd0]/35 blur-3xl" />
     <div className="absolute -right-24 bottom-0 h-80 w-80 rounded-full bg-[#d4af37]/10 blur-3xl" />
 

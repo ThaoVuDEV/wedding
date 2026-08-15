@@ -68,7 +68,7 @@ a {
 }
 
 .section {
-  min-height: 100%;
+  min-height: auto;
   content-visibility: auto;
   contain-intrinsic-size: 100svh;
 }

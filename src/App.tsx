@@ -14,7 +14,12 @@ import weddingPhoto2 from "./assets/wedding/2.webp";
 import weddingPhoto3 from "./assets/wedding/3.webp";
 import weddingPhoto4 from "./assets/wedding/4.webp";
 import weddingPhoto5 from "./assets/wedding/5.webp";
+import weddingPhoto7 from "./assets/wedding/7.webp";
+import weddingPhoto8 from "./assets/wedding/8.webp";
+import weddingPhoto9 from "./assets/wedding/9.webp";
+import weddingPhoto11 from "./assets/wedding/11.webp";
 import storyPhoto from "../images/6.png";
+import invitationBackground from "../images/10.png";
 import { WEDDING } from "./config/wedding";
 import "./index.css";
 
@@ -62,12 +67,16 @@ function App() {
     />,
     <WeddingGallery
       key="gallery"
-      coverImage={weddingPhoto1}
+      coverImage={weddingPhoto11}
       images={[
-        { src: weddingPhoto2, alt: "Khoảnh khắc cưới 1" },
-        { src: weddingPhoto3, alt: "Khoảnh khắc cưới 2" },
-        { src: weddingPhoto4, alt: "Khoảnh khắc cưới 3" },
-        { src: weddingPhoto5, alt: "Khoảnh khắc cưới 4" },
+        { src: weddingPhoto1, alt: "Khoảnh khắc cưới 1" },
+        { src: weddingPhoto2, alt: "Khoảnh khắc cưới 2" },
+        { src: weddingPhoto3, alt: "Khoảnh khắc cưới 3" },
+        { src: weddingPhoto4, alt: "Khoảnh khắc cưới 4" },
+        { src: weddingPhoto5, alt: "Khoảnh khắc cưới 5" },
+        { src: weddingPhoto7, alt: "Khoảnh khắc cưới 7" },
+        { src: weddingPhoto8, alt: "Khoảnh khắc cưới 8" },
+        { src: weddingPhoto9, alt: "Khoảnh khắc cưới 9" },
       ]}
     />,
     <WeddingSchedule
@@ -202,7 +211,7 @@ function App() {
         <div className="invitation-overlay fixed inset-0 z-[100] flex items-center justify-center px-4 py-[max(1rem,env(safe-area-inset-top))] transition-opacity duration-700">
           <div
             className="absolute inset-0 scale-105 bg-cover bg-center blur-[2px]"
-            style={{ backgroundImage: `url(${weddingPhoto1})` }}
+            style={{ backgroundImage: `url(${invitationBackground})` }}
           />
           <div className="absolute inset-0 bg-[#17070c]/65" />
 

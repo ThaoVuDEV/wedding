@@ -56,7 +56,7 @@ export const WeddingSchedule = ({
   return (
     <section
       ref={rootRef}
-      className="relative flex min-h-[100svh] items-center overflow-hidden bg-[#f6f0ea] px-4 py-14 sm:px-6 sm:py-20"
+      className="relative flex min-h-0 items-center overflow-hidden bg-[#f6f0ea] px-4 py-14 md:min-h-[100svh] sm:px-6 sm:py-20"
     >
       <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-[#741d35] via-[#b89258] to-[#741d35]" />
       <div className="pointer-events-none absolute -left-32 top-1/2 h-80 w-80 -translate-y-1/2 rounded-full border border-[#b89258]/15" />
@@ -177,7 +177,7 @@ export const WeddingSchedule = ({
                       </dl>
 
                       <a
-                        href={event.mapUrl}
+                        href={`https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(event.mapQuery)}`}
                         target="_blank"
                         rel="noreferrer"
                         className={`mt-5 inline-flex min-h-10 items-center gap-2 rounded-full border px-4 py-2 font-sans text-[10px] font-semibold uppercase tracking-[0.16em] transition hover:bg-[#b89258]/10 ${isGroom ? "border-[#741d35]/20 text-[#741d35] hover:border-[#741d35]/40" : "border-[#b89258]/40 text-[#965064] hover:border-[#b89258]"}`}

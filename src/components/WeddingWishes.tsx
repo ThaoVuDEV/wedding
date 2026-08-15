@@ -182,7 +182,7 @@ export const WeddingWishes = () => {
   return (
     <section
       ref={rootRef}
-      className="relative min-h-[100svh] w-full overflow-hidden bg-[#f8f4ef] py-14 sm:py-20"
+      className="relative min-h-0 w-full overflow-hidden bg-[#f8f4ef] py-14 md:min-h-[100svh] sm:py-20"
     >
       <div className="absolute -top-24 -left-24 h-72 w-72 rounded-full bg-[#800020]/10 blur-3xl" />
       <div className="absolute -bottom-24 -right-24 h-80 w-80 rounded-full bg-[#d4af37]/15 blur-3xl" />

@@ -32,7 +32,7 @@ export const OurStory = ({
   }, []);
 
   return (
-    <section ref={rootRef} className="relative flex min-h-[100svh] items-center overflow-hidden bg-[#f8f1eb] px-5 py-14 text-[#741d35] sm:px-6 sm:py-20">
+    <section ref={rootRef} className="relative flex min-h-0 items-center overflow-hidden bg-[#f8f1eb] px-5 py-14 text-[#741d35] md:min-h-[100svh] sm:px-6 sm:py-20">
       <div className="absolute -right-24 -top-24 h-80 w-80 rounded-full border border-[#d8b777]/30" />
       <div className="absolute -right-10 -top-10 h-52 w-52 rounded-full border border-[#d8b777]/20" />
       <div className="absolute -bottom-32 -left-32 h-80 w-80 rounded-full bg-[#e9cbd0]/45 blur-3xl" />

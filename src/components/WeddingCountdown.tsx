@@ -46,7 +46,7 @@ export const WeddingCountdown = () => {
   ];
 
   return (
-    <section className="relative flex min-h-[100svh] items-center overflow-hidden bg-[#fbf7f1] px-5 py-16 sm:px-6 sm:py-20">
+    <section className="relative flex min-h-0 items-center overflow-hidden bg-[#fbf7f1] px-5 py-16 md:min-h-[100svh] sm:px-6 sm:py-20">
       <div className="absolute -left-32 bottom-10 h-72 w-72 rounded-full bg-[#e9cbd0]/30 blur-3xl" />
       <div className="absolute -right-32 top-0 h-80 w-80 rounded-full bg-[#d4af37]/10 blur-3xl" />
 
