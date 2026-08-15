@@ -39,7 +39,6 @@ function App() {
       groomAlias="Chú rể"
       brideAlias="Cô dâu"
       weddingDate={WEDDING.dateDisplay}
-      weddingTime={WEDDING.timeDisplay}
     />,
     <WeddingSchedule
       key="schedule"

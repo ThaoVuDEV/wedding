@@ -8,10 +8,9 @@ interface WelcomeProps {
   brideAlias?: string;
   bgImage?: string;
   weddingDate: string;
-  weddingTime: string;
 }
 
-export const Welcome = ({ groomName, brideName, weddingDate, weddingTime }: WelcomeProps) => {
+export const Welcome = ({ groomName, brideName, weddingDate }: WelcomeProps) => {
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
@@ -49,8 +48,6 @@ export const Welcome = ({ groomName, brideName, weddingDate, weddingTime }: Welc
 
           <div className="mx-auto mt-6 flex max-w-xs items-center justify-center gap-4 border-t border-[#d4af37]/30 pt-4 font-script text-xl text-[#800020] sm:text-2xl md:mx-0 md:justify-start md:gap-6">
             <p>{weddingDate}</p>
-            <span className="h-10 w-px bg-[#d4af37]/40" />
-            <p>{weddingTime}</p>
           </div>
         </div>
       </div>

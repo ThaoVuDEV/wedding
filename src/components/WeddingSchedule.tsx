@@ -94,7 +94,7 @@ export const WeddingSchedule = ({
               <p className="relative mt-5 text-[9px] uppercase tracking-[0.5em] text-[#e7c98e]">
                 Thiệp cưới
               </p>
-              <p className="relative mt-3 font-serif text-4xl font-semibold tracking-[0.12em] text-[#fff1cf] sm:text-5xl">
+              <p className="relative mt-3 font-sans text-4xl font-semibold tracking-[0.12em] text-[#fff1cf] sm:text-5xl">
                 {WEDDING.dateDisplay}
               </p>
               <p className="relative mt-4 font-script text-2xl text-white/85 sm:text-3xl">
@@ -125,7 +125,7 @@ export const WeddingSchedule = ({
                     <span className="absolute right-5 top-5 font-serif text-3xl text-[#b89258]/35">
                       0{index + 1}
                     </span>
-                    <p className="text-[9px] uppercase tracking-[0.38em] text-[#a37d49]">
+                    <p className="font-sans text-[10px] font-semibold uppercase tracking-[0.25em] text-[#8d6a43]">
                       {event.side}
                     </p>
                     <h3 className="mt-2 font-serif text-3xl font-semibold italic text-[#741d35] sm:text-4xl">
@@ -138,13 +138,13 @@ export const WeddingSchedule = ({
                       <div className="flex items-start gap-3">
                         <DetailIcon type="time" />
                         <div>
-                          <dt className="text-[8px] uppercase tracking-[0.28em] text-[#9d8c85]">
+                          <dt className="font-sans text-[10px] font-semibold uppercase tracking-[0.2em] text-[#8d6a43]">
                             Thời gian
                           </dt>
-                          <dd className="mt-1 font-serif text-lg font-semibold text-[#741d35] sm:text-xl">
+                          <dd className="mt-1 font-sans text-base font-bold text-[#741d35] sm:text-lg">
                             {event.date}
                           </dd>
-                          <dd className="mt-0.5 font-serif text-lg font-semibold text-[#741d35] sm:text-xl">
+                          <dd className="mt-0.5 font-sans text-sm font-semibold text-[#741d35] sm:text-base">
                             {event.time}
                           </dd>
                         </div>
@@ -152,13 +152,13 @@ export const WeddingSchedule = ({
                       <div className="flex items-start gap-3">
                         <DetailIcon type="place" />
                         <div>
-                          <dt className="text-[8px] uppercase tracking-[0.28em] text-[#9d8c85]">
+                          <dt className="font-sans text-[10px] font-semibold uppercase tracking-[0.2em] text-[#8d6a43]">
                             Địa điểm
                           </dt>
-                          <dd className="mt-1 text-sm text-[#625355]">
+                          <dd className="mt-1 font-sans text-sm font-medium text-[#4f4043]">
                             {event.venue}
                           </dd>
-                          <dd className="mt-0.5 text-xs text-[#9d8c85]">
+                          <dd className="mt-0.5 font-sans text-xs text-[#756568]">
                             {event.address}
                           </dd>
                         </div>
@@ -166,10 +166,10 @@ export const WeddingSchedule = ({
                     </dl>
 
                     <a
-                      href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(event.mapQuery)}`}
+                      href={event.mapUrl}
                       target="_blank"
                       rel="noreferrer"
-                      className="mt-5 inline-flex min-h-10 items-center gap-2 rounded-full border border-[#741d35]/20 px-4 py-2 text-[9px] font-semibold uppercase tracking-[0.2em] text-[#741d35] transition hover:border-[#b89258] hover:bg-[#b89258]/10"
+                      className="mt-5 inline-flex min-h-10 items-center gap-2 rounded-full border border-[#741d35]/20 px-4 py-2 font-sans text-[10px] font-semibold uppercase tracking-[0.16em] text-[#741d35] transition hover:border-[#b89258] hover:bg-[#b89258]/10"
                     >
                       <span aria-hidden="true">⌖</span>
                       Chỉ đường

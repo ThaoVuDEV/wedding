@@ -20,7 +20,7 @@ export default {
       },
       fontFamily: {
         serif: ["Playfair Display", "serif"],
-        sans: ["Poppins", "sans-serif"],
+        sans: ["Be Vietnam Pro", "sans-serif"],
         script: ['"Dancing Script"', "cursive"],
       },
     },

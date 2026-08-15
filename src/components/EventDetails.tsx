@@ -259,7 +259,7 @@ export const EventDetails: React.FC<EventDetailsProps> = ({
     {
       title: "TIỆC CƯỚI NHÀ GÁI",
       schedule: "THỜI GIAN ĐANG CẬP NHẬT",
-      date: "XX . 11 . 2026",
+      date: "29 . 11 . 2026",
       lunarDate: "Ngày âm lịch: XXX",
       locationTitle: "TẠI TƯ GIA NHÀ GÁI",
       locationAddress: "XXX - Đang cập nhật",
@@ -268,7 +268,7 @@ export const EventDetails: React.FC<EventDetailsProps> = ({
     {
       title: "TIỆC CƯỚI NHÀ TRAI",
       schedule: "THỜI GIAN ĐANG CẬP NHẬT",
-      date: "XX . 11 . 2026",
+      date: "29 . 11 . 2026",
       lunarDate: "Ngày âm lịch: XXX",
       locationTitle: "TẠI TƯ GIA NHÀ TRAI",
       locationAddress: "XXX - Đang cập nhật",
@@ -302,7 +302,7 @@ export const EventDetails: React.FC<EventDetailsProps> = ({
         weddingDateObj.getFullYear(),
         weddingDateObj.getMonth(),
         weddingDateObj.getDate(),
-        10,
+        7,
         0,
         0,
       ).getTime();
@@ -414,12 +414,12 @@ export const EventDetails: React.FC<EventDetailsProps> = ({
           </div>
           <div className="flex flex-col items-center text-center mb-16">
             <p className="text-6xl md:text-7xl font-script font-bold text-[#800020] mb-6">
-              XX/11/2026
+              29/11/2026
             </p>
             <div className="flex items-center gap-4 md:gap-8 mb-4 font-script text-lg md:text-xl text-gray-600 uppercase tracking-widest">
-              <span>Thứ: XXX</span>
+              <span>Thứ: CN</span>
               <div className="h-8 w-[1px] bg-gray-300" />
-              <span>Ngày XX</span>
+              <span>Ngày 29</span>
               <div className="h-8 w-[1px] bg-gray-300" />
               <span>Tháng 11</span>
             </div>
