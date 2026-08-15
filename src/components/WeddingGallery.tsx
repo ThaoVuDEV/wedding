@@ -83,13 +83,13 @@ export const WeddingGallery = ({ coverImage, images = [] }: WeddingGalleryProps)
         </div>
 
         {images.length > 0 && (
-          <div className={`mt-6 grid grid-cols-2 gap-2.5 transition-all delay-300 duration-1000 sm:gap-4 lg:grid-cols-4 ${isVisible ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"}`}>
+          <div className={`mt-5 grid grid-cols-2 gap-2 transition-all delay-300 duration-1000 sm:gap-3.5 lg:grid-cols-4 ${isVisible ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"}`}>
             {images.map((photo, index) => (
               <div
                 key={photo.src}
-                className={`wedding-photo-frame overflow-hidden rounded-[1.3rem] p-0.5 shadow-lg transition duration-500 hover:-translate-y-1 hover:shadow-[0_16px_35px_rgba(92,35,45,0.18)] sm:rounded-[1.7rem] ${index % 2 === 1 ? "mt-4" : "mb-4"}`}
+                className={`wedding-photo-frame overflow-hidden rounded-[1.2rem] p-0.5 shadow-lg transition duration-500 hover:-translate-y-1 hover:shadow-[0_16px_35px_rgba(92,35,45,0.18)] sm:rounded-[1.6rem] ${index % 2 === 1 ? "mt-2" : "mb-2"}`}
               >
-                <div className="aspect-[4/5] overflow-hidden rounded-[1.1rem] sm:rounded-[1.5rem]">
+                <div className="aspect-square overflow-hidden rounded-[1rem] sm:rounded-[1.4rem]">
                   <button
                     type="button"
                     aria-label={`Xem ${photo.alt}`}
