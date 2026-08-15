@@ -23,6 +23,16 @@ export const WeddingGallery = ({ coverImage, images = [] }: WeddingGalleryProps)
   const rootRef = useRef<HTMLElement | null>(null);
   const [isVisible, setIsVisible] = useState(false);
   const [activePhoto, setActivePhoto] = useState<WeddingPhoto | null>(null);
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [loadedPhotoCount, setLoadedPhotoCount] = useState(0);
+  const [isAlbumReady, setIsAlbumReady] = useState(false);
+
+  const albumPhotos: WeddingPhoto[] = [
+    ...(coverImage
+      ? [{ src: coverImage, alt: "Ảnh bìa cưới của Bùi Diễn và Ngọc Chinh" }]
+      : []),
+    ...images,
+  ];
 
   useEffect(() => {
     const element = rootRef.current;
@@ -48,6 +58,38 @@ export const WeddingGallery = ({ coverImage, images = [] }: WeddingGalleryProps)
     return () => window.removeEventListener("keydown", closeOnEscape);
   }, [activePhoto]);
 
+  useEffect(() => {
+    setActiveIndex(0);
+    setLoadedPhotoCount(0);
+    setIsAlbumReady(albumPhotos.length === 0);
+
+    if (albumPhotos.length === 0) return;
+
+    let loadedCount = 0;
+    let cancelled = false;
+    const markAsLoaded = () => {
+      loadedCount += 1;
+      if (cancelled) return;
+      setLoadedPhotoCount(loadedCount);
+      if (loadedCount === albumPhotos.length) setIsAlbumReady(true);
+    };
+
+    albumPhotos.forEach((photo) => {
+      const image = new Image();
+      image.onload = markAsLoaded;
+      image.onerror = markAsLoaded;
+      image.src = photo.src;
+    });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [coverImage, images]);
+
+  const activeAlbumPhoto = albumPhotos[activeIndex];
+  const showPreviousPhoto = () => setActiveIndex((current) => (current - 1 + albumPhotos.length) % albumPhotos.length);
+  const showNextPhoto = () => setActiveIndex((current) => (current + 1) % albumPhotos.length);
+
   return (
     <section ref={rootRef} className="relative min-h-0 overflow-hidden bg-[#f4ebe3] px-3 py-14 md:min-h-[100svh] sm:px-6 sm:py-20">
       <div className="mx-auto w-full max-w-6xl">
@@ -56,59 +98,76 @@ export const WeddingGallery = ({ coverImage, images = [] }: WeddingGalleryProps)
           <h2 className="mt-3 font-script text-5xl text-[#800020] min-[380px]:text-6xl sm:text-7xl">Chuyện Mình Qua Ảnh</h2>
         </header>
 
-        <div className={`wedding-photo-frame relative overflow-hidden rounded-[2rem] p-0.5 shadow-[0_24px_80px_rgba(92,35,45,0.12)] transition-all delay-200 duration-1000 sm:rounded-[2.75rem] sm:p-1 ${isVisible ? "scale-100 opacity-100" : "scale-[0.97] opacity-0"}`}>
-          <div className="relative aspect-[4/5] overflow-hidden rounded-[1.6rem] sm:aspect-[16/8] sm:rounded-[2.25rem]">
-            {coverImage ? (
-              <button
-                type="button"
-                aria-label="Xem ảnh bìa cưới"
-                onClick={() =>
-                  setActivePhoto({
-                    src: coverImage,
-                    alt: "Ảnh bìa cưới của Bùi Diễn và Ngọc Chinh",
-                  })
-                }
-                className="h-full w-full cursor-zoom-in"
-              >
-                <img src={coverImage} alt="Ảnh bìa cưới của Bùi Diễn và Ngọc Chinh" decoding="async" className="h-full w-full object-cover" />
-              </button>
-            ) : (
-              <EmptyPhoto label="Ảnh bìa cưới" />
-            )}
-            <div className="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-[#2c000b]/80 to-transparent px-6 pb-7 pt-24 text-white sm:px-10 sm:pb-9">
-              <p className="font-script text-3xl sm:text-5xl">Bùi Diễn · Ngọc Chinh</p>
-              <p className="mt-2 text-[9px] uppercase tracking-[0.35em] text-white/60">Tháng Mười Một · 2026</p>
+        <div className={`mx-auto w-full max-w-3xl transition-all delay-200 duration-1000 ${isVisible ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"}`}>
+          {!isAlbumReady ? (
+            <div className="flex min-h-[24rem] flex-col items-center justify-center rounded-[2rem] border border-[#d4af37]/20 bg-white/35 text-[#800020]/60 shadow-[0_24px_80px_rgba(92,35,45,0.08)]">
+              <span className="mb-4 h-8 w-8 animate-spin rounded-full border-2 border-[#d4af37]/25 border-t-[#800020]" />
+              <p className="text-[10px] uppercase tracking-[0.3em]">Đang tải album</p>
+              <p className="mt-2 text-xs text-[#800020]/45">{loadedPhotoCount}/{albumPhotos.length} ảnh</p>
             </div>
-          </div>
-        </div>
-
-        {images.length > 0 && (
-          <div className={`mt-5 grid grid-cols-2 gap-2 transition-all delay-300 duration-1000 sm:gap-3.5 lg:grid-cols-4 ${isVisible ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"}`}>
-            {images.map((photo, index) => (
-              <div
-                key={photo.src}
-                className={`wedding-photo-frame overflow-hidden rounded-[1.2rem] p-0.5 shadow-lg transition duration-500 hover:-translate-y-1 hover:shadow-[0_16px_35px_rgba(92,35,45,0.18)] sm:rounded-[1.6rem] ${index % 2 === 1 ? "mt-2" : "mb-2"}`}
-              >
-                <div className="aspect-square overflow-hidden rounded-[1rem] sm:rounded-[1.4rem]">
-                  <button
-                    type="button"
-                    aria-label={`Xem ${photo.alt}`}
-                    onClick={() => setActivePhoto(photo)}
-                    className="group h-full w-full cursor-zoom-in overflow-hidden"
-                  >
-                    <img
-                      src={photo.src}
-                      alt={photo.alt}
-                      loading="lazy"
-                      decoding="async"
-                      className="h-full w-full object-cover transition duration-700 group-hover:scale-105"
-                    />
-                  </button>
+          ) : activeAlbumPhoto ? (
+            <>
+              <div className="relative mx-auto w-full max-w-[25rem] px-8 sm:max-w-[28rem] sm:px-10">
+                <div className="wedding-photo-frame overflow-hidden rounded-[2rem] p-0.5 shadow-[0_24px_60px_rgba(92,35,45,0.18)] sm:rounded-[2.5rem] sm:p-1">
+                  <div className="relative aspect-[4/5] overflow-hidden rounded-[1.8rem] bg-[#eadbd0] sm:rounded-[2.2rem]">
+                    <button
+                      type="button"
+                      aria-label={`Xem lớn ${activeAlbumPhoto.alt}`}
+                      onClick={() => setActivePhoto(activeAlbumPhoto)}
+                      className="group h-full w-full cursor-zoom-in"
+                    >
+                      <img
+                        src={activeAlbumPhoto.src}
+                        alt={activeAlbumPhoto.alt}
+                        decoding="async"
+                        className="h-full w-full object-cover transition duration-700 group-hover:scale-105"
+                      />
+                    </button>
+                  </div>
                 </div>
+                {albumPhotos.length > 1 && (
+                  <>
+                    <button
+                      type="button"
+                      aria-label="Ảnh trước"
+                      onClick={showPreviousPhoto}
+                      className="absolute left-0 top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-white/90 text-2xl text-[#800020] shadow-lg transition hover:scale-110 hover:bg-white"
+                    >
+                      ‹
+                    </button>
+                    <button
+                      type="button"
+                      aria-label="Ảnh tiếp theo"
+                      onClick={showNextPhoto}
+                      className="absolute right-0 top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-white/90 text-2xl text-[#800020] shadow-lg transition hover:scale-110 hover:bg-white"
+                    >
+                      ›
+                    </button>
+                  </>
+                )}
               </div>
-            ))}
-          </div>
-        )}
+
+              {albumPhotos.length > 1 && (
+                <div className="mt-6 flex gap-2 overflow-x-auto px-1 pb-2 sm:mt-7 sm:justify-center sm:gap-3">
+                  {albumPhotos.map((photo, index) => (
+                    <button
+                      key={photo.src}
+                      type="button"
+                      aria-label={`Chọn ${photo.alt}`}
+                      aria-current={index === activeIndex}
+                      onClick={() => setActiveIndex(index)}
+                      className={`w-14 shrink-0 overflow-hidden rounded-xl border-2 bg-white p-0.5 shadow-sm transition duration-300 sm:w-20 sm:rounded-2xl ${index === activeIndex ? "scale-105 border-[#800020] shadow-md" : "border-white/80 opacity-70 hover:scale-105 hover:opacity-100"}`}
+                    >
+                      <img src={photo.src} alt="" loading="eager" decoding="async" className="aspect-[3/4] w-full rounded-lg object-cover sm:rounded-xl" />
+                    </button>
+                  ))}
+                </div>
+              )}
+            </>
+          ) : (
+            <EmptyPhoto label="Album ảnh cưới" />
+          )}
+        </div>
 
       </div>
 
