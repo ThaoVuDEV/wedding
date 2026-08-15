@@ -23,7 +23,6 @@ export const WeddingGallery = ({ coverImage, images = [] }: WeddingGalleryProps)
   const rootRef = useRef<HTMLElement | null>(null);
   const [isVisible, setIsVisible] = useState(false);
   const [activePhoto, setActivePhoto] = useState<WeddingPhoto | null>(null);
-  const [activeSlide, setActiveSlide] = useState(0);
 
   useEffect(() => {
     const element = rootRef.current;
@@ -48,14 +47,6 @@ export const WeddingGallery = ({ coverImage, images = [] }: WeddingGalleryProps)
     window.addEventListener("keydown", closeOnEscape);
     return () => window.removeEventListener("keydown", closeOnEscape);
   }, [activePhoto]);
-
-  useEffect(() => {
-    if (images.length < 2) return;
-    const timer = window.setInterval(() => {
-      setActiveSlide((current) => (current + 1) % images.length);
-    }, 4500);
-    return () => window.clearInterval(timer);
-  }, [images.length]);
 
   return (
     <section ref={rootRef} className="relative min-h-0 overflow-hidden bg-[#f4ebe3] px-3 py-14 md:min-h-[100svh] sm:px-6 sm:py-20">
@@ -92,56 +83,30 @@ export const WeddingGallery = ({ coverImage, images = [] }: WeddingGalleryProps)
         </div>
 
         {images.length > 0 && (
-          <div className={`mx-auto mt-7 w-full max-w-4xl transition-all delay-300 duration-1000 ${isVisible ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"}`}>
-            <div className="wedding-photo-frame relative overflow-hidden rounded-[2rem] p-0.5 shadow-[0_20px_60px_rgba(92,35,45,0.14)] sm:rounded-[2.5rem]">
-              <div className="relative aspect-[4/5] overflow-hidden rounded-[1.8rem] sm:aspect-[16/8] sm:rounded-[2.3rem]">
-                <button
-                  type="button"
-                  aria-label={`Xem ${images[activeSlide].alt}`}
-                  onClick={() => setActivePhoto(images[activeSlide])}
-                  className="group h-full w-full cursor-zoom-in"
-                >
-                  <img
-                    src={images[activeSlide].src}
-                    alt={images[activeSlide].alt}
-                    loading="lazy"
-                    decoding="async"
-                    className="h-full w-full object-cover transition duration-700 group-hover:scale-105"
-                  />
-                  <span className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#2c000b]/45 via-transparent to-transparent opacity-70" />
-                </button>
-                <span className="pointer-events-none absolute bottom-5 left-6 font-script text-3xl text-white drop-shadow sm:left-9 sm:text-5xl">
-                  Bùi Diễn · Ngọc Chinh
-                </span>
-                <button
-                  type="button"
-                  aria-label="Ảnh tiếp theo"
-                  onClick={() => setActiveSlide((current) => (current + 1) % images.length)}
-                  className="absolute right-4 top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-white/80 text-2xl text-[#741d35] shadow-lg transition hover:scale-110 hover:bg-white"
-                >
-                  ›
-                </button>
-                <button
-                  type="button"
-                  aria-label="Ảnh trước"
-                  onClick={() => setActiveSlide((current) => (current - 1 + images.length) % images.length)}
-                  className="absolute left-4 top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-white/80 text-2xl text-[#741d35] shadow-lg transition hover:scale-110 hover:bg-white"
-                >
-                  ‹
-                </button>
+          <div className={`mt-7 grid grid-cols-2 gap-3 transition-all delay-300 duration-1000 sm:gap-5 lg:grid-cols-4 ${isVisible ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"}`}>
+            {images.map((photo, index) => (
+              <div
+                key={photo.src}
+                className={`wedding-photo-frame overflow-hidden rounded-[1.4rem] p-0.5 shadow-lg transition duration-500 hover:-translate-y-1 hover:shadow-[0_16px_35px_rgba(92,35,45,0.18)] sm:rounded-[1.8rem] ${index % 2 === 1 ? "mt-6" : "mb-6"}`}
+              >
+                <div className="aspect-[3/4] overflow-hidden rounded-[1.2rem] sm:rounded-[1.6rem]">
+                  <button
+                    type="button"
+                    aria-label={`Xem ${photo.alt}`}
+                    onClick={() => setActivePhoto(photo)}
+                    className="group h-full w-full cursor-zoom-in overflow-hidden"
+                  >
+                    <img
+                      src={photo.src}
+                      alt={photo.alt}
+                      loading="lazy"
+                      decoding="async"
+                      className="h-full w-full object-cover transition duration-700 group-hover:scale-105"
+                    />
+                  </button>
+                </div>
               </div>
-            </div>
-            <div className="mt-4 flex justify-center gap-2">
-              {images.map((photo, index) => (
-                <button
-                  key={photo.src}
-                  type="button"
-                  aria-label={`Chọn ảnh ${index + 1}`}
-                  onClick={() => setActiveSlide(index)}
-                  className={`h-2 rounded-full transition-all ${index === activeSlide ? "w-7 bg-[#741d35]" : "w-2 bg-[#d4af37]/45 hover:bg-[#d4af37]"}`}
-                />
-              ))}
-            </div>
+            ))}
           </div>
         )}
 
