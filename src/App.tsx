@@ -65,7 +65,7 @@ function App() {
     <ThankYou
       key="thankyou"
       weddingDate={WEDDING.dateSlash}
-      message="Niềm vui của chúng mình sẽ trọn vẹn hơn khi có bạn ở bên. Hẹn gặp bạn vào một ngày thật đẹp của tháng Mười Một."
+      message="Chúng mình rất mong được đón bạn đến chung vui và sẻ chia những khoảnh khắc ý nghĩa trong ngày trọng đại. Sự hiện diện của bạn sẽ là niềm vui và là món quà quý giá đối với chúng mình."
     />,
   ], []);
 
@@ -182,7 +182,7 @@ function App() {
         <div className="invitation-overlay fixed inset-0 z-[100] flex items-center justify-center px-4 py-[max(1rem,env(safe-area-inset-top))] transition-opacity duration-700">
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_20%,#6f2943_0%,#3b1827_42%,#21131a_100%)]" />
 
-          <div className="invitation-card relative w-full max-w-[410px] overflow-hidden rounded-[2rem] border border-[#d8b777]/45 bg-[#f8f4ef] p-7 text-center text-[#741d35] shadow-[0_30px_90px_rgba(0,0,0,0.4)] sm:rounded-[2.5rem] sm:p-10">
+          <div className="invitation-card relative w-full max-w-[410px] overflow-hidden rounded-[2rem] border border-[#d8b777]/45 bg-[#fffdfb] p-7 text-center text-[#741d35] shadow-[0_30px_90px_rgba(0,0,0,0.4)] sm:rounded-[2.5rem] sm:p-10">
             <p className="relative text-[9px] uppercase tracking-[0.48em] text-[#a37d49]">Thiệp cưới</p>
             <div className="relative mx-auto my-5 flex h-28 w-28 items-center justify-center rounded-full border border-[#b89258]/60 bg-[#741d35] text-[#f7e5a8] shadow-[0_14px_30px_rgba(116,29,53,0.2)] sm:my-7 sm:h-32 sm:w-32">
               <WeddingMonogram className="text-[7.5rem] sm:text-[8.5rem]" />

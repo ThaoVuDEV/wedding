@@ -147,10 +147,23 @@ a {
 
 .gift-cta {
   box-shadow: 0 12px 28px rgba(184, 146, 88, 0.2);
+  animation: giftPulse 2.2s ease-in-out infinite;
 }
 
 .gift-cta:hover {
   box-shadow: 0 16px 34px rgba(184, 146, 88, 0.3);
+  animation-play-state: paused;
+}
+
+@keyframes giftPulse {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 0 12px 28px rgba(184, 146, 88, 0.2);
+  }
+  50% {
+    transform: scale(1.04);
+    box-shadow: 0 16px 36px rgba(184, 146, 88, 0.38);
+  }
 }
 
 @keyframes spin {
