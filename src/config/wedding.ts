@@ -15,7 +15,7 @@ export const WEDDING = {
       time: "7:00",
       venue: "Tư gia nhà chú rể",
       address: "Thôn Lương Cụ, Quỳnh Phụ, Hưng Yên",
-      mapQuery: "Thôn Lương Cụ, Quỳnh Phụ, Hưng Yên",
+      mapQuery: "20.656740, 106.324078",
       mapUrl: "https://maps.app.goo.gl/r95MUYRbak1Ua4PC6",
     },
     {

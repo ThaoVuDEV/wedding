@@ -177,7 +177,7 @@ export const WeddingSchedule = ({
                       </dl>
 
                       <a
-                        href={`https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(event.mapQuery)}`}
+                        href={event.mapUrl}
                         target="_blank"
                         rel="noreferrer"
                         className={`mt-5 inline-flex min-h-10 items-center gap-2 rounded-full border px-4 py-2 font-sans text-[10px] font-semibold uppercase tracking-[0.16em] transition hover:bg-[#b89258]/10 ${isGroom ? "border-[#741d35]/20 text-[#741d35] hover:border-[#741d35]/40" : "border-[#b89258]/40 text-[#965064] hover:border-[#b89258]"}`}
