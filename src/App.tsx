@@ -9,17 +9,17 @@ import { WeddingMonogram } from "./components/WeddingMonogram";
 import { WeddingGallery } from "./components/WeddingGallery";
 import { WeddingDateInfo } from "./components/WeddingDateInfo";
 import { WeddingCountdown } from "./components/WeddingCountdown";
-import weddingPhoto1 from "./assets/wedding/1.webp";
-import weddingPhoto2 from "./assets/wedding/2.webp";
-import weddingPhoto3 from "./assets/wedding/3.webp";
-import weddingPhoto4 from "./assets/wedding/4.webp";
-import weddingPhoto5 from "./assets/wedding/5.webp";
-import weddingPhoto7 from "./assets/wedding/7.webp";
-import weddingPhoto8 from "./assets/wedding/8.webp";
-import weddingPhoto9 from "./assets/wedding/9.webp";
-import weddingPhoto11 from "./assets/wedding/11.webp";
-import storyPhoto from "../images/6.png";
-import invitationBackground from "../images/10.png";
+import featuredPhoto from "../images/new/2.jpg";
+import galleryPhoto3 from "../images/new/3.jpg";
+import galleryPhoto4 from "../images/new/4.jpg";
+import galleryPhoto6 from "../images/new/6.jpg";
+import galleryPhoto7 from "../images/new/7.jpg";
+import galleryPhoto8 from "../images/new/8.jpg";
+import galleryPhoto9 from "../images/new/9.jpg";
+import galleryPhoto10 from "../images/new/10.jpg";
+import galleryPhoto11 from "../images/new/11.jpg";
+import galleryPhoto12 from "../images/new/12.jpg";
+import galleryPhoto13 from "../images/new/13.jpg";
 import { WEDDING } from "./config/wedding";
 import "./index.css";
 
@@ -51,7 +51,7 @@ function App() {
     <OurStory
       key="story"
       title="Lời Ngỏ"
-      image={storyPhoto}
+      image={featuredPhoto}
       story="Giữa những ngày bình thường, chúng mình gặp nhau, rồi nhận ra hạnh phúc đôi khi bắt đầu từ một người khiến ta muốn sẻ chia mọi điều. Từ hôm nay, chúng mình chọn cùng nhau đi qua những niềm vui, những thử thách và những ngày bình dị phía trước."
       quote="Bùi Diễn & Ngọc Chinh"
       highlights={[
@@ -67,16 +67,17 @@ function App() {
     />,
     <WeddingGallery
       key="gallery"
-      coverImage={weddingPhoto11}
       images={[
-        { src: weddingPhoto1, alt: "Khoảnh khắc cưới 1" },
-        { src: weddingPhoto2, alt: "Khoảnh khắc cưới 2" },
-        { src: weddingPhoto3, alt: "Khoảnh khắc cưới 3" },
-        { src: weddingPhoto4, alt: "Khoảnh khắc cưới 4" },
-        { src: weddingPhoto5, alt: "Khoảnh khắc cưới 5" },
-        { src: weddingPhoto7, alt: "Khoảnh khắc cưới 7" },
-        { src: weddingPhoto8, alt: "Khoảnh khắc cưới 8" },
-        { src: weddingPhoto9, alt: "Khoảnh khắc cưới 9" },
+        { src: galleryPhoto3, alt: "Khoảnh khắc cưới 3" },
+        { src: galleryPhoto4, alt: "Chú rể" },
+        { src: galleryPhoto13, alt: "Cô dâu" },
+        { src: galleryPhoto6, alt: "Khoảnh khắc cưới 6" },
+        { src: galleryPhoto7, alt: "Khoảnh khắc cưới 7" },
+        { src: galleryPhoto8, alt: "Khoảnh khắc cưới 8" },
+        { src: galleryPhoto9, alt: "Khoảnh khắc cưới 9" },
+        { src: galleryPhoto10, alt: "Khoảnh khắc cưới 10" },
+        { src: galleryPhoto11, alt: "Cô dâu trên xe" },
+        { src: galleryPhoto12, alt: "Khoảnh khắc cưới 12" },
       ]}
     />,
     <WeddingSchedule
@@ -211,7 +212,7 @@ function App() {
         <div className="invitation-overlay fixed inset-0 z-[100] flex items-center justify-center px-4 py-[max(1rem,env(safe-area-inset-top))] transition-opacity duration-700">
           <div
             className="absolute inset-0 scale-105 bg-cover bg-center blur-[2px]"
-            style={{ backgroundImage: `url(${invitationBackground})` }}
+            style={{ backgroundImage: `url(${featuredPhoto})` }}
           />
           <div className="absolute inset-0 bg-[#17070c]/65" />
 

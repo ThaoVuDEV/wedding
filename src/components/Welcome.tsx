@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { WeddingMonogram } from "./WeddingMonogram";
-import weddingPhoto from "../../images/10.png";
+import weddingPhoto from "../../images/new/1.jpg";
 
 interface WelcomeProps {
   groomName: string;
