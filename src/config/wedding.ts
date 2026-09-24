@@ -24,7 +24,7 @@ export const WEDDING = {
       date: "29 · 11 · 2026",
       time: "7:00",
       venue: "Tư gia nhà cô dâu",
-      address: "Minh Thọ, Hưng Yên",
+      address: "Thôn Ngọc Quế 2 ,Minh Thọ, Hưng Yên",
       mapQuery: "20.689438, 106.319017",
       mapUrl: "https://www.google.com/maps/dir/?api=1&destination=20.689438%2C106.319017",
     },
